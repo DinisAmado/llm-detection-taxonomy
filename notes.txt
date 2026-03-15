@@ -1,0 +1,22 @@
+1. Crear el entorno virtual
+python -m venv venv
+
+✅ 2. Activar el entorno virtual
+venv\Scripts\activate
+
+
+✅ 3. Instalar dependencias desde requirements.txt
+pip install -r requirements.txt
+
+✅ 4. Verificar dependencias instaladas
+pip list
+
+
+🔥 1. FastAPI / Uvicorn
+uvicorn main:app --reload
+
+Carpeta: app
+Archivo: main
+Variable FastAPI: app (asumiendo que dentro tienes app = FastAPI())
+
+uvicorn app.main:app --reload 
