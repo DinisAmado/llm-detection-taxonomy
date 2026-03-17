@@ -132,11 +132,11 @@ To validate the efficiency and structural integrity of the newly implemented Uni
 
 Terminal Output: Illustrates the real-time analysis of the examples.txt dataset using the gpt-4o-mini model, showing consistent processing without truncation errors.
 
-![Terminal Output](assets/terminal_output.png)
+![Terminal Output](images/terminal_output.png)
 
 JSON Results: Displays the final structured data, highlighting the successful mapping of entities and relationships according to the 7 defined taxonomy categories.
 
-![JSON Results](assets/json_sample.png)
+![JSON Results](images/json_sample.png)
 
 
 
