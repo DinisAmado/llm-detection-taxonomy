@@ -1,0 +1,360 @@
+[
+  {
+    "id": 1,
+    "original_text": "Me da risa cuando me dicen “¿y qué hiciste este finde?”, como si hubiera hecho paracaidismo o algún deporte extremo. Tengo 30, fui al súper, lavé ropa, ordené mi cuarto, me tomé un vinito y avancé unos capítulos de mi serie.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Author",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Author",
+          "interaction_type": "expresses opinion",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "The Author reflects humorously on their weekend activities, indicating a light-hearted sentiment."
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "original_text": "Hoy lloré: un compañero de trabajo que está endeudado hasta la chota ahorró no almorzando ni comprando nada en todo el día desde hace meses para comprarle un regalo de cumpleaños a la esposa, ayer se lo dió y hoy me mostró emocionado todo lloroso las fotos de ella re contenta",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Compañero de trabajo",
+          "type": "Person"
+        },
+        {
+          "id": "Esposa",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Compañero de trabajo",
+          "target": "Esposa",
+          "interaction_type": "gives gift",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "The action of giving a gift is described with emotional context, indicating positive feelings."
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "original_text": "Why does everyone force introverts to leave their comfort zone, but no one forces extroverts to shut up for a while? Why???",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Introverts",
+          "type": "Group"
+        },
+        {
+          "id": "Extroverts",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Introverts",
+          "target": "Extroverts",
+          "interaction_type": "criticizes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "The author expresses frustration about the perceived double standard in social expectations."
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "original_text": "If you’re the type who just wants to get close to the girls, stop! don’t! But if you really know what you’re doing and genuinely want the best for them without having creepy thoughts, then I wish you luck!",
+    "analysis": {
+      "entities": [
+        {
+          "id": "girls",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "girls",
+          "interaction_type": "expresses opinion",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "The author expresses a wish for the best for the girls, indicating a positive sentiment."
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "original_text": "I was taken to the Brazilian Supreme Court for saying the most voted \"woman\" in the country is actually a man. After five years of persecution, I won.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Brazilian Supreme Court",
+          "type": "Institution"
+        },
+        {
+          "id": "woman",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Brazilian Supreme Court",
+          "interaction_type": "was taken to",
+          "taxonomy_classification": "VIOLATED",
+          "confidence_reasoning": "The Author faced legal action, indicating a rights violation."
+        },
+        {
+          "source": "Author",
+          "target": "woman",
+          "interaction_type": "criticizes",
+          "taxonomy_classification": "HATE",
+          "confidence_reasoning": "The statement implies a derogatory view towards the group."
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "original_text": "multiple siblings can grow up in the same house, with the same parents, and have completely different childhoods.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "siblings",
+          "type": "Group"
+        },
+        {
+          "id": "parents",
+          "type": "Group"
+        },
+        {
+          "id": "house",
+          "type": "Location"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "siblings",
+          "target": "parents",
+          "interaction_type": "grow up with",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "The statement reflects on the shared experience of siblings and parents, indicating a neutral observation about their relationships."
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "original_text": "Minha filha é autista e fez 18 anos e falou que queria ver esse filme pq agora pode ver filme de terror, levei ela pra ver no cinema, ela se assustou com o boneco lá com tambor, dormiu, assustou de novo, dormiu, e no fim se divertiu. Foi maravilhoso passar esse momento com ela.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Filha",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Filha",
+          "interaction_type": "spends time with",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "The author expresses a positive sentiment about spending time with their daughter."
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "original_text": "Eu amava esse live action quando eu era criança mano, quando anunciaram a estreia desse filme eu fui correndo assistir de tanta empolgação que eu estava, minha mente de 8 anos achava esse estilo a coisa mais linda do mundo hsksksksksk",
+    "analysis": {
+      "entities": [],
+      "relationships": [],
+      "confidence_reasoning": "The text expresses personal feelings and nostalgia but does not contain any socially relevant entities or meaningful relationships."
+    }
+  },
+  {
+    "id": 9,
+    "original_text": "EL PROBLEMA NO ES QUE TRABAJE SI NO LA DESORGANIZACION MAÑANA SE PONEN 50 MAS A TRABAJAR ASI EN LAS CALLES DEJANDOLA PUERCAS CON PELOS, BASURA Y SE HACE EL CHIQUERO DE CIUDAD PERO ERES TAN ESTUPIDA QUE NO LO VAS A ENTENDER",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Author",
+          "type": "Person"
+        },
+        {
+          "id": "Target",
+          "type": "Person"
+        },
+        {
+          "id": "City",
+          "type": "Location"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Target",
+          "interaction_type": "insults",
+          "taxonomy_classification": "HATE",
+          "confidence_reasoning": "The Author insults the Target by calling them 'stupid' in the context of expressing frustration about disorganization."
+        }
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "original_text": "cuando veo parejas asi me dan ganas de decir tu novio no tiene un \"size kink\" es simplemente medio pedofilo y si fuera legal cojerse a una de 11, lo haría",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Author",
+          "type": "Person"
+        },
+        {
+          "id": "Target",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Target",
+          "interaction_type": "insults",
+          "taxonomy_classification": "HATE",
+          "confidence_reasoning": "The author expresses a derogatory opinion about the target's partner, implying inappropriate behavior."
+        }
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "original_text": "Pedir la opinión de Twitter es inútil, hay gente que la odia por joder, otras que la odian por razones pelotudas y otros que la odian por cosas con sentido y lo mismo del otro lado, mejor mira la serie y arma tu propia opinión en este caso por que acá no ayudan.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Twitter",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Twitter",
+          "interaction_type": "criticizes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "The author expresses frustration about the opinions on Twitter being unhelpful."
+        }
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "original_text": "Men and women still need each other. This weird extreme of pretending like sexes can be segregated and work without each other is silly. We would all die within a couple years.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Men",
+          "type": "Group"
+        },
+        {
+          "id": "Women",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Men",
+          "target": "Women",
+          "interaction_type": "need",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "The statement expresses an opinion about the interdependence of men and women."
+        }
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "original_text": "You swore not to lay your hands on Charlie. But you just couldn’t help yourself, could you? You fucking creep. You’re always doing that. And I hate it.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Charlie",
+          "type": "Person"
+        },
+        {
+          "id": "Author",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Charlie",
+          "interaction_type": "hates",
+          "taxonomy_classification": "HATE",
+          "confidence_reasoning": "The Author expresses strong negative feelings towards Charlie, indicating hate."
+        }
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "original_text": "If that kind of thing happened to me. I would not say anything to the police, and I would set fire to the house. No mercy.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Author",
+          "type": "Person"
+        },
+        {
+          "id": "house",
+          "type": "Location"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "house",
+          "interaction_type": "threatens to burn",
+          "taxonomy_classification": "THREAT",
+          "confidence_reasoning": "The author expresses intent to set fire to the house, indicating a clear threat."
+        }
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "original_text": "So done with this shit. Your mental health problems are your responsibility, and we will not let you blackmail society into participating in your dysfunction so that you can avoid the work of fixing yourself.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "Author",
+          "type": "Person"
+        },
+        {
+          "id": "Target",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Target",
+          "interaction_type": "expresses frustration",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "The author expresses frustration towards the target's mental health issues and perceived manipulation."
+        }
+      ]
+    }
+  }
+]
