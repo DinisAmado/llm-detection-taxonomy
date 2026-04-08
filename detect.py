@@ -49,7 +49,7 @@ def safe_json_load(content):
     try:
         return json.loads(content_str)
     except json.JSONDecodeError as err:
-        d_log = {"error": err, "raw_output": content_str[:200]}
+        d_log = {"error": str(err), "raw_output": content_str[:500]}
 
     # Regex fallback to find the first JSON block
     match = re.search(r"(\{.*\}|\[.*\])", content_str, re.DOTALL)
@@ -57,7 +57,7 @@ def safe_json_load(content):
         try:
             return json.loads(match.group(1))
         except json.JSONDecodeError as err:
-            d_log = {"error": err, "raw_output": content_str[:200]}
+            d_log = {"error": str(err), "raw_output": content_str[:500]}
 
     return d_log
 
@@ -190,7 +190,7 @@ def classify_relation(original_text, rel):
 # 5. MAIN BATCH PROCESSOR
 def process_entry(idx, text):
     print(f"[{idx}] Stage 1: Extraction...")
-    s1_res = retry_call(lambda: call_complet(STAGE1_MODEL, [{"role": "system", "content": STAGE_1_PROMPT},{"role": "user", "content": text}], max_tokens=500))
+    s1_res = retry_call(lambda: call_complet(STAGE1_MODEL, [{"role": "system", "content": STAGE_1_PROMPT},{"role": "user", "content": text}], max_tokens=1000))
     graph = safe_json_load(s1_res)
 
     if "relationships" in graph and isinstance(graph["relationships"], list):
