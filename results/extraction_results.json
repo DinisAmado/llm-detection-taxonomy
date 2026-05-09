@@ -11,56 +11,16 @@
         {
           "id": "Target",
           "type": "Person"
-        },
-        {
-          "id": "Súper",
-          "type": "Location"
-        },
-        {
-          "id": "Vinito",
-          "type": "Institution"
         }
       ],
       "relationships": [
         {
           "source": "Author",
           "target": "Target",
-          "interaction_type": "asks",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Author",
-          "target": "Súper",
-          "interaction_type": "visited",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Author",
-          "target": "Author",
-          "interaction_type": "consumes",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Author",
-          "target": "Author",
-          "interaction_type": "watches",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
+          "interaction_type": "teases",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 (multilingual sentiment model) detected 'negative' sentiment.",
+          "confidence_score": 68.08
         }
       ]
     }
@@ -75,60 +35,21 @@
           "type": "Person"
         },
         {
-          "id": "Compañero de trabajo",
-          "type": "Person"
-        },
-        {
-          "id": "Especie",
-          "type": "Location"
-        },
-        {
-          "id": "Esposa",
+          "id": "Target",
           "type": "Person"
         }
       ],
       "relationships": [
         {
           "source": "Author",
-          "target": "Compañero de trabajo",
-          "interaction_type": "knows",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Compañero de trabajo",
-          "target": "Author",
-          "interaction_type": "owes",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Compañero de trabajo",
-          "target": "Esposa",
-          "interaction_type": "supports",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Compañero de trabajo",
-          "interaction_type": "gives",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Compañero de trabajo",
-          "target": "Esposa",
-          "interaction_type": "gives",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
+          "target": "Target",
+          "interaction_type": "interacts",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         }
-      ]
+      ],
+      "_extraction_note": "KG extraction failed — direct classification applied"
     }
   },
   {
@@ -141,30 +62,50 @@
           "type": "Person"
         },
         {
-          "id": "Introverts",
+          "id": "Target",
+          "type": "Person"
+        },
+        {
+          "id": "extroverts",
           "type": "Group"
         },
         {
-          "id": "Extroverts",
+          "id": "introverts",
           "type": "Group"
         }
       ],
       "relationships": [
         {
           "source": "Author",
-          "target": "Introverts",
+          "target": "Target",
           "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement is an extreme generalization that implies a deliberate and malicious intent from extroverts, which is not necessarily true. It also uses a rhetorical question to emphasize the perceived injustice.",
-          "accuracy": "80%"
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         },
         {
           "source": "Author",
-          "target": "Extroverts",
-          "interaction_type": "compares",
-          "taxonomy_classification": "RADICALISM",
-          "confidence_reasoning": "The statement is an extreme generalization and uses rhetorical questions to emphasize a perceived injustice, which is a characteristic of radical language.",
-          "accuracy": "80%"
+          "target": "introverts",
+          "interaction_type": "forces",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "Author",
+          "target": "extroverts",
+          "interaction_type": "forces",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "Author",
+          "target": "Target",
+          "interaction_type": "questions",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         }
       ]
     }
@@ -181,10 +122,6 @@
         {
           "id": "Target",
           "type": "Person"
-        },
-        {
-          "id": "Girls",
-          "type": "Group"
         }
       ],
       "relationships": [
@@ -192,17 +129,9 @@
           "source": "Author",
           "target": "Target",
           "interaction_type": "advises",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement contains a strong and absolute warning ('stop! don't!') which is characteristic of extremist language, and also includes a contradictory tone with a wish of luck for those who genuinely want the best for the girls.",
-          "accuracy": "80%"
-        },
-        {
-          "source": "Author",
-          "target": "Girls",
-          "interaction_type": "cautions",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement contains a strong warning and a condition for being allowed to get close to girls, which implies a strict and extreme set of rules.",
-          "accuracy": "80%"
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         }
       ]
     }
@@ -217,22 +146,30 @@
           "type": "Person"
         },
         {
-          "id": "Brazilian Supreme Court",
-          "type": "Institution"
+          "id": "Target",
+          "type": "Person"
         },
         {
-          "id": "Brazil",
-          "type": "Location"
+          "id": "Brazilian Supreme Court",
+          "type": "Institution"
         }
       ],
       "relationships": [
         {
           "source": "Author",
+          "target": "Target",
+          "interaction_type": "states",
+          "taxonomy_classification": "HATE",
+          "confidence_reasoning": "Tier 1 (hate model) detected hate speech with high confidence.",
+          "confidence_score": 98.3
+        },
+        {
+          "source": "Author",
           "target": "Brazilian Supreme Court",
-          "interaction_type": "was taken to",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement is an extreme opinion that challenges the widely accepted fact about the most voted woman in the country, and the author's claim that they were persecuted for five years suggests a strong sense of conviction and potential intolerance for opposing views.",
-          "accuracy": "80%"
+          "interaction_type": "is_taken_to",
+          "taxonomy_classification": "HATE",
+          "confidence_reasoning": "Tier 1 (hate model) detected hate speech with high confidence.",
+          "confidence_score": 98.3
         }
       ]
     }
@@ -251,54 +188,18 @@
           "type": "Person"
         },
         {
-          "id": "House",
-          "type": "Location"
-        },
-        {
-          "id": "Parents",
-          "type": "Group"
+          "id": "childhood",
+          "type": "concept"
         }
       ],
       "relationships": [
         {
           "source": "Author",
-          "target": "Target",
-          "interaction_type": "grew_up_with",
-          "taxonomy_classification": "RADICALISM",
-          "confidence_reasoning": "The use of single quotes around 'Author' and 'Target' suggests a deliberate attempt to highlight or emphasize their relationship, which may be seen as radical or unconventional.",
-          "accuracy": "80%"
-        },
-        {
-          "source": "Author",
-          "target": "House",
-          "interaction_type": "lived_in",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Author",
-          "target": "Parents",
-          "interaction_type": "had",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Target",
-          "target": "House",
-          "interaction_type": "lived_in",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Target",
-          "target": "Parents",
-          "interaction_type": "had",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
+          "target": "childhood",
+          "interaction_type": "experiences",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         }
       ]
     }
@@ -309,68 +210,25 @@
     "analysis": {
       "entities": [
         {
-          "id": "Minha filha",
+          "id": "Author",
           "type": "Person"
         },
         {
-          "id": "Eu",
+          "id": "Target",
           "type": "Person"
-        },
-        {
-          "id": "Elas",
-          "type": "Person"
-        },
-        {
-          "id": "O cinema",
-          "type": "Location"
-        },
-        {
-          "id": "O filme",
-          "type": "Institution"
         }
       ],
       "relationships": [
         {
-          "source": "Eu",
-          "target": "Minha filha",
-          "interaction_type": "acompainhou",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Minha filha",
-          "target": "O cinema",
-          "interaction_type": "visitou",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Minha filha",
-          "target": "O filme",
-          "interaction_type": "assistiu",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "O filme",
-          "target": "Minha filha",
-          "interaction_type": "assustou",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Minha filha",
-          "target": "Eu",
-          "interaction_type": "divertiu",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
+          "source": "Author",
+          "target": "Target",
+          "interaction_type": "interacts",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         }
-      ]
+      ],
+      "_extraction_note": "KG extraction failed — direct classification applied"
     }
   },
   {
@@ -385,10 +243,6 @@
         {
           "id": "Target",
           "type": "Person"
-        },
-        {
-          "id": "Filme",
-          "type": "Institution"
         }
       ],
       "relationships": [
@@ -397,16 +251,8 @@
           "target": "Target",
           "interaction_type": "remembers",
           "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Author",
-          "target": "Filme",
-          "interaction_type": "was_excited_about",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "85%"
+          "confidence_reasoning": "Tier 2 (multilingual sentiment model) detected 'positive' sentiment.",
+          "confidence_score": 85.92
         }
       ]
     }
@@ -425,38 +271,26 @@
           "type": "Person"
         },
         {
-          "id": "Trabajo",
-          "type": "Institution"
-        },
-        {
-          "id": "Ciudad",
-          "type": "Location"
+          "id": "Police",
+          "type": "Group"
         }
       ],
       "relationships": [
         {
           "source": "Author",
           "target": "Target",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The text contains aggressive language, insults, and a confrontational tone, which are characteristic of extremist rhetoric.",
-          "accuracy": "90%"
+          "interaction_type": "insults",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         },
         {
           "source": "Author",
-          "target": "Trabajo",
-          "interaction_type": "complains",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The text contains strong language and insults, such as 'ERES TAN ESTUPIDA' which translates to 'YOU ARE SO STUPID', and a general tone of aggression and disrespect towards the 'author'. The text also contains a threat of violence ('SE HACE EL CHIQUERO DE CIUDAD') which implies a level of extremism.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Ciudad",
+          "target": "Police",
           "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The text contains aggressive language and personal attacks, such as calling someone 'estupida' (stupid), which is a characteristic of extremist language. Additionally, the tone is confrontational and dismissive, indicating a radical stance.",
-          "accuracy": "90%"
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         }
       ]
     }
@@ -465,8 +299,27 @@
     "id": 10,
     "original_text": "cuando veo parejas asi me dan ganas de decir tu novio no tiene un \"size kink\" es simplemente medio pedofilo y si fuera legal cojerse a una de 11, lo haría",
     "analysis": {
-      "error": "Invalid JSON",
-      "raw_output": "Lo siento, pero no puedo cumplir con esa solicitud."
+      "entities": [
+        {
+          "id": "Author",
+          "type": "Person"
+        },
+        {
+          "id": "Target",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "Author",
+          "target": "Target",
+          "interaction_type": "interacts",
+          "taxonomy_classification": "RADICALISM",
+          "confidence_reasoning": "The text systematically dehumanizes a group (pedophiles) and implies they should be excluded from society.",
+          "confidence_score": 100.0
+        }
+      ],
+      "_extraction_note": "KG extraction failed — direct classification applied"
     }
   },
   {
@@ -491,50 +344,10 @@
         {
           "source": "Author",
           "target": "Twitter",
-          "interaction_type": "uses",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The text contains strong negative language and generalizations about people who have different opinions, indicating an extremist viewpoint. The use of phrases such as 'gente que la odia' (people who hate) and 'razones pelotudas' (ridiculous reasons) also suggests a radical and extreme tone.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Target",
           "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The text contains strong language and a dismissive tone towards people who have differing opinions, labeling them as 'gente que la odia por razones pelotudas' (people who hate for silly reasons). This kind of language is characteristic of extremist views.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "disagrees",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement expresses a strong negative opinion about people who disagree with the author's view, using derogatory language ('gente que la odia por joder', 'razones pelotudas') and dismisses the opposing views as 'inútil'.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "disagrees",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The text contains strong language and a dismissive tone towards people who have differing opinions, indicating extremist views.",
-          "accuracy": "80%"
-        },
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "disagrees",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement contains strong language and a dismissive tone towards people who have differing opinions, indicating an extremist viewpoint.",
-          "accuracy": "80%"
-        },
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "disagrees",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement expresses a strong negative opinion about seeking opinions on Twitter, using derogatory language ('joder', 'pelotudas') and dismissing opposing views, indicating an extremist stance.",
-          "accuracy": "80%"
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 (multilingual sentiment model) detected 'negative' sentiment.",
+          "confidence_score": 92.54
         }
       ]
     }
@@ -545,50 +358,34 @@
     "analysis": {
       "entities": [
         {
+          "id": "Author",
+          "type": "Person"
+        },
+        {
           "id": "Men",
           "type": "Group"
         },
         {
           "id": "Women",
           "type": "Group"
-        },
-        {
-          "id": "Author",
-          "type": "Person"
         }
       ],
       "relationships": [
         {
-          "source": "Men",
-          "target": "Women",
-          "interaction_type": "need",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement suggests that without men and women working together, the entire human population would die within a couple of years, which is an exaggerated and unrealistic claim. This level of extremity is characteristic of extremist views.",
-          "accuracy": "80%"
-        },
-        {
-          "source": "Women",
-          "target": "Men",
-          "interaction_type": "need",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement implies that the survival of humans is dependent on the interaction between men and women, which is an extreme and exaggerated view. Additionally, the tone is confrontational and dismissive of alternative perspectives, characteristic of extremist rhetoric.",
-          "accuracy": "80%"
-        },
-        {
           "source": "Author",
           "target": "Men",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement makes a strong and absolute claim that humans would 'all die within a couple years' if sexes were segregated, which is an extreme and unlikely outcome. This kind of language is often associated with extremist views.",
-          "accuracy": "80%"
+          "interaction_type": "believes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 (sentiment model) detected 'negative' sentiment.",
+          "confidence_score": 81.4
         },
         {
           "source": "Author",
           "target": "Women",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement suggests that any attempt to segregate men and women is 'silly' and would lead to catastrophic consequences, implying a radical and extreme view.",
-          "accuracy": "80%"
+          "interaction_type": "believes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 (sentiment model) detected 'negative' sentiment.",
+          "confidence_score": 81.4
         }
       ]
     }
@@ -605,30 +402,19 @@
         {
           "id": "Target",
           "type": "Person"
-        },
-        {
-          "id": "Charlie",
-          "type": "Person"
         }
       ],
       "relationships": [
         {
           "source": "Author",
           "target": "Target",
-          "interaction_type": "hates",
-          "taxonomy_classification": "THREAT",
-          "confidence_reasoning": "Group B Encoder detected nothate speech.",
-          "accuracy": "99.99%"
-        },
-        {
-          "source": "Author",
-          "target": "Charlie",
-          "interaction_type": "swore not to lay hands on",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The use of derogatory language ('fucking creep') and aggressive tone in the text indicates a strong emotional response and a willingness to express extreme opinions.",
-          "accuracy": "80%"
+          "interaction_type": "interacts",
+          "taxonomy_classification": "VIOLATED",
+          "confidence_reasoning": "The text describes a physical altercation that has already happened.",
+          "confidence_score": 100.0
         }
-      ]
+      ],
+      "_extraction_note": "KG extraction failed — direct classification applied"
     }
   },
   {
@@ -659,24 +445,24 @@
           "target": "Target",
           "interaction_type": "threatens",
           "taxonomy_classification": "THREAT",
-          "confidence_reasoning": "Group B Encoder detected nothate speech.",
-          "accuracy": "99.99%"
+          "confidence_reasoning": "The text explicitly mentions setting fire to a house, which is a direct threat of physical harm.",
+          "confidence_score": 100.0
         },
         {
           "source": "Author",
           "target": "Police",
-          "interaction_type": "refuses_to_cooperate",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement expresses a willingness to engage in violent and destructive behavior (setting fire to the house) and a refusal to cooperate with law enforcement, which are characteristic of extremist ideologies.",
-          "accuracy": "90%"
+          "interaction_type": "refuses_to_report",
+          "taxonomy_classification": "VIOLATED",
+          "confidence_reasoning": "The text describes a violent act as a response to a situation, indicating direct personal violence.",
+          "confidence_score": 100.0
         },
         {
           "source": "Author",
           "target": "House",
           "interaction_type": "plans_to_damage",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Group A Encoder detected negative sentiment.",
-          "accuracy": "91.81%"
+          "taxonomy_classification": "VIOLATED",
+          "confidence_reasoning": "The text describes a violent act that has already happened or is being actively planned.",
+          "confidence_score": 100.0
         }
       ]
     }
@@ -692,7 +478,7 @@
         },
         {
           "id": "Target",
-          "type": "Group"
+          "type": "Person"
         },
         {
           "id": "Society",
@@ -703,34 +489,26 @@
         {
           "source": "Author",
           "target": "Target",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The language used is highly confrontational and judgmental, with a tone that implies a complete rejection of the idea that mental health problems should be acknowledged and addressed. The phrase 'blackmail society' and the use of profanity ('shit') contribute to this classification.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Target",
-          "target": "Author",
-          "interaction_type": "blackmails",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement uses strong language and makes a blanket accusation of 'blackmailing society' which is an extreme and radical stance. It also shifts the responsibility of the author's mental health problems from the individual to society, which is a characteristic of extremist ideologies.",
-          "accuracy": "80%"
+          "interaction_type": "blames",
+          "taxonomy_classification": "VIOLATED",
+          "confidence_reasoning": "The text describes a situation where physical harm is being described as already happened or being actively planned.",
+          "confidence_score": 100.0
         },
         {
           "source": "Author",
           "target": "Society",
           "interaction_type": "threatens",
-          "taxonomy_classification": "THREAT",
-          "confidence_reasoning": "Group B Encoder detected nothate speech.",
-          "accuracy": "99.58%"
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 (sentiment model) detected 'negative' sentiment.",
+          "confidence_score": 92.92
         },
         {
           "source": "Society",
           "target": "Author",
           "interaction_type": "refuses",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement uses strong language ('shit', 'blackmail') and makes a blanket statement about mental health problems, implying that individuals with such issues are solely responsible for their condition and should not receive support from society. This kind of rhetoric is often associated with extremist ideologies.",
-          "accuracy": "80%"
+          "taxonomy_classification": "RADICALISM",
+          "confidence_reasoning": "The text targets individuals with mental health problems, implying they are a dysfunctional group that society should not support.",
+          "confidence_score": 100.0
         }
       ]
     }

@@ -1,2 +1,7 @@
+fastapi
+uvicorn[standard]
 huggingface_hub
 python-dotenv
+dotenv
+datasets 
+requests
