@@ -3,17 +3,24 @@ import json
 import time
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dotenv import load_dotenv
+
+# from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
 
 # 1. ENVIRONMENT SETUP
-load_dotenv()
+# load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
 client = InferenceClient(token=HF_TOKEN)
 
+## KG
 STAGE1_MODEL = "meta-llama/Llama-3.1-8B-Instruct"
+
+## DETECTION TAXONOMY
+# Sentimental and Emotional
 MODEL_GROUP_A = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+# Hate and Threat
 MODEL_GROUP_B = "facebook/roberta-hate-speech-dynabench-r4-target"
+# Extremist, Radicalism and Violated-scaled
 MODEL_GROUP_C = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 # 2. STAGE 1 PROMPT (Base Graph Extraction)
@@ -34,29 +41,50 @@ CRITICAL: OUTPUT ONLY VALID JSON. START DIRECTLY WITH {:
 }
 """
 
-# 3. JSON Parser 
+
+# 3. JSON Parser
 def safe_json_load(content):
     content_str = str(content).strip()
+    d_log = {}
     try:
         return json.loads(content_str)
-    except:
-        pass
+    except json.JSONDecodeError as err:
+        d_log = {"error": str(err), "raw_output": content_str[:500]}
+
     # Regex fallback to find the first JSON block
-    match = re.search(r'(\{.*\}|\[.*\])', content_str, re.DOTALL)
+    match = re.search(r"(\{.*\}|\[.*\])", content_str, re.DOTALL)
     if match:
         try:
             return json.loads(match.group(1))
-        except:
-            pass
-    return {"error": "Invalid JSON", "raw_output": content_str[:200]}
+        except json.JSONDecodeError as err:
+            d_log = {"error": str(err), "raw_output": content_str[:500]}
+
+    return d_log
+
 
 def retry_call(fn, retries=3):
     for i in range(retries):
         try:
             return fn()
         except Exception:
-            if i == retries - 1: raise
-            time.sleep(2.5 * (i + 1)) 
+            if i == retries - 1:
+                raise
+            time.sleep(2.5 * (i + 1))
+
+
+def call_classif(or_text, sel_model):
+    return client.text_classification(text=or_text, model=sel_model)[0]
+
+
+def call_complet(sel_model, l_info=[],  max_tokens=150, temperature=0.1):
+    response = client.chat_completion(
+        model=sel_model,
+        messages=l_info,
+        max_tokens=max_tokens,
+        temperature=temperature,
+    )
+    return response.choices[0].message.content
+
 
 # 4. STAGE 2: ROUTING & CLASSIFICATION
 def classify_relation(original_text, rel):
@@ -66,36 +94,65 @@ def classify_relation(original_text, rel):
     interaction_text = f"{source} {interaction} {target}".lower()
 
     try:
-        # GROUP A: Sentimental/Emotional 
-        if any(w in interaction_text for w in [
-            "feel", "think", "love", "opinion", "sad", "cry", "admira", "cuida", "gracias", 
-            "llora", "emociona", "empolga", "gosta", "ama", "sente", "deseja", "espera"
-        ]):
-            def call():
-                return client.text_classification(text=original_text, model=MODEL_GROUP_A)[0]
-            
-            res = retry_call(call)
+        # GROUP A: Sentimental/Emotional
+        if any(
+            w in interaction_text
+            for w in [
+                "feel",
+                "think",
+                "love",
+                "opinion",
+                "sad",
+                "cry",
+                "admira",
+                "cuida",
+                "gracias",
+                "llora",
+                "emociona",
+                "empolga",
+                "gosta",
+                "ama",
+                "sente",
+                "deseja",
+                "espera",
+            ]
+        ):
+        
+            res = retry_call(lambda: call_classif(original_text, MODEL_GROUP_A))
             label = "EMOTIONAL" if res.label == "negative" else "SENTIMENTAL"
             return {
                 "taxonomy_classification": label,
                 "confidence_reasoning": f"Group A Encoder detected {res.label} sentiment.",
-                "accuracy": f"{round(res.score * 100, 2)}%"
+                "accuracy": f"{round(res.score * 100, 2)}%",
             }
 
-        # GROUP B: Hate/Threat 
-        elif any(w in interaction_text for w in [
-            "insult", "threat", "kill", "attack", "hate", "slur", "violencia", 
-            "insulta", "ataca", "mata", "odio", "amenaza", "agride", "ofende"
-        ]):
-            def call():
-                return client.text_classification(text=original_text, model=MODEL_GROUP_B)[0]
+        # GROUP B: Hate/Threat
+        if any(
+            w in interaction_text
+            for w in [
+                "insult",
+                "threat",
+                "kill",
+                "attack",
+                "hate",
+                "slur",
+                "violencia",
+                "insulta",
+                "ataca",
+                "mata",
+                "odio",
+                "amenaza",
+                "agride",
+                "ofende",
+            ]
+        ):
             
-            res = retry_call(call)
+            res = retry_call(lambda: call_classif(original_text, MODEL_GROUP_B))
             label = "HATE" if res.label == "hate" else "THREAT"
             return {
                 "taxonomy_classification": label,
                 "confidence_reasoning": f"Group B Encoder detected {res.label} speech.",
-                "accuracy": f"{round(res.score * 100, 2)}%"
+                "accuracy": f"{round(res.score * 100, 2)}%",
             }
 
         # GROUP C: Reasoners (Extremist/Radicalism/Violated)
@@ -109,54 +166,43 @@ def classify_relation(original_text, rel):
               "confidence_reasoning": "Reason",
               "accuracy": "Self-estimated percentage (e.g. 85%)"
             }}"""
-            
-            def call():
-                response = client.chat_completion(
-                    model=MODEL_GROUP_C,
-                    messages=[{"role": "user", "content": prompt}],
-                    max_tokens=150, temperature=0.1
-                )
-                return response.choices[0].message.content
 
-            res_text = retry_call(call)
+            res_text = retry_call(lambda: call_complet(MODEL_GROUP_C, [{"role": "user", "content": prompt}]) )
             data = safe_json_load(res_text)
 
             # Map NEUTRAL to SENTIMENTAL for 7-category taxonomy compliance
             if data.get("taxonomy_classification") == "NEUTRAL":
                 data["taxonomy_classification"] = "SENTIMENTAL"
-                data["confidence_reasoning"] = "Neutral interaction mapped to Sentimental."
-            
+                data["confidence_reasoning"] = (
+                    "Neutral interaction mapped to Sentimental."
+                )
+
             return data
 
     except Exception as e:
         return {
             "taxonomy_classification": "SENTIMENTAL",
             "confidence_reasoning": f"Fallback due to API error: {str(e)}",
-            "accuracy": "N/A"
+            "accuracy": "N/A",
         }
+
 
 # 5. MAIN BATCH PROCESSOR
 def process_entry(idx, text):
     print(f"[{idx}] Stage 1: Extraction...")
-    
-    def call_s1():
-        response = client.chat_completion(
-            model=STAGE1_MODEL,
-            messages=[{"role": "system", "content": STAGE_1_PROMPT}, {"role": "user", "content": text}],
-            max_tokens=500, temperature=0.1
-        )
-        return response.choices[0].message.content
-
-    s1_res = retry_call(call_s1)
+    s1_res = retry_call(lambda: call_complet(STAGE1_MODEL, [{"role": "system", "content": STAGE_1_PROMPT},{"role": "user", "content": text}], max_tokens=1000))
     graph = safe_json_load(s1_res)
 
     if "relationships" in graph and isinstance(graph["relationships"], list):
-        print(f"[{idx}] Stage 2: Routing {len(graph['relationships'])} relationships...")
+        print(
+            f"[{idx}] Stage 2: Routing {len(graph['relationships'])} relationships..."
+        )
         for rel in graph["relationships"]:
             tax_data = classify_relation(text, rel)
             rel.update(tax_data)
 
     return {"id": idx, "original_text": text, "analysis": graph}
+
 
 def run_batch_test():
     input_file = "examples.txt"
@@ -171,7 +217,10 @@ def run_batch_test():
         final_results = []
 
         with ThreadPoolExecutor(max_workers=2) as executor:
-            futures = [executor.submit(process_entry, i + 1, text) for i, text in enumerate(lines)]
+            futures = [
+                executor.submit(process_entry, i + 1, text)
+                for i, text in enumerate(lines)
+            ]
             for future in as_completed(futures):
                 final_results.append(future.result())
 
@@ -184,6 +233,9 @@ def run_batch_test():
 
     except FileNotFoundError:
         print("Error: examples.txt not found.")
+
+
+###### MAIN
 
 if __name__ == "__main__":
     run_batch_test()

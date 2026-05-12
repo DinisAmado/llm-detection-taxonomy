@@ -5,3 +5,5 @@ python-dotenv
 dotenv
 datasets 
 requests
+transformers
+torch

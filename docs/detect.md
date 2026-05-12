@@ -56,16 +56,10 @@ python detect.py
 
 The script classifies all interactions into one of these 7 mandatory categories:
 
-EMOTIONAL
-
-EXTREMIST
-
-HATE
-
-RADICALISM
-
-SENTIMENTAL (includes mundane/neutral actions)
-
-THREAT
-
-VIOLATED
+- EMOTIONAL
+- EXTREMIST
+- HATE
+- RADICALISM
+- SENTIMENTAL (includes mundane/neutral actions)
+- THREAT
+- VIOLATED
