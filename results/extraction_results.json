@@ -17,10 +17,50 @@
         {
           "source": "Author",
           "target": "Target",
-          "interaction_type": "teases",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 (multilingual sentiment model) detected 'negative' sentiment.",
-          "confidence_score": 68.08
+          "interaction_type": "criticizes",
+          "taxonomy_classification": "RADICALISM",
+          "confidence_reasoning": "The text uses a sarcastic tone to criticize the expectations of others, implying that the speaker's mundane activities are being unfairly judged as boring or unadventurous.",
+          "accuracy": "80%"
+        },
+        {
+          "source": "Author",
+          "target": "Target",
+          "interaction_type": "asks",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "90%"
+        },
+        {
+          "source": "Author",
+          "target": "Súper",
+          "interaction_type": "visited",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "95%"
+        },
+        {
+          "source": "Author",
+          "target": "Súper",
+          "interaction_type": "purchased",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "95%"
+        },
+        {
+          "source": "Author",
+          "target": "Author",
+          "interaction_type": "drinks",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "90%"
+        },
+        {
+          "source": "Author",
+          "target": "Author",
+          "interaction_type": "watches",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "95%"
         }
       ]
     }
@@ -35,18 +75,58 @@
           "type": "Person"
         },
         {
-          "id": "Target",
+          "id": "Compañero de trabajo",
+          "type": "Person"
+        },
+        {
+          "id": "Ejemplar",
+          "type": "Person"
+        },
+        {
+          "id": "La esposa",
           "type": "Person"
         }
       ],
       "relationships": [
         {
           "source": "Author",
-          "target": "Target",
-          "interaction_type": "interacts",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
+          "target": "Compañero de trabajo",
+          "interaction_type": "knows",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "95%"
+        },
+        {
+          "source": "Compañero de trabajo",
+          "target": "La esposa",
+          "interaction_type": "cares about",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "90%"
+        },
+        {
+          "source": "Author",
+          "target": "Compañero de trabajo",
+          "interaction_type": "admires",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "90%"
+        },
+        {
+          "source": "Compañero de trabajo",
+          "target": "Author",
+          "interaction_type": "thanks",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "95%"
+        },
+        {
+          "source": "Compañero de trabajo",
+          "target": "La esposa",
+          "interaction_type": "gave a gift to",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
+          "accuracy": "90%"
         }
       ],
       "_extraction_note": "KG extraction failed — direct classification applied"
@@ -79,436 +159,17 @@
           "source": "Author",
           "target": "Target",
           "interaction_type": "criticizes",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
+          "taxonomy_classification": "EXTREMIST",
+          "confidence_reasoning": "The statement is an extreme generalization that implies a deliberate and malicious intent from extroverts, which is not necessarily the case. It also uses rhetorical questions to create a sense of outrage and injustice.",
+          "accuracy": "80%"
         },
         {
           "source": "Author",
-          "target": "introverts",
-          "interaction_type": "forces",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        },
-        {
-          "source": "Author",
-          "target": "extroverts",
-          "interaction_type": "forces",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        },
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "questions",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        }
-      ]
-    }
-  },
-  {
-    "id": 4,
-    "original_text": "If you’re the type who just wants to get close to the girls, stop! don’t! But if you really know what you’re doing and genuinely want the best for them without having creepy thoughts, then I wish you luck!",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "advises",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        }
-      ]
-    }
-  },
-  {
-    "id": 5,
-    "original_text": "I was taken to the Brazilian Supreme Court for saying the most voted \"woman\" in the country is actually a man. After five years of persecution, I won.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        },
-        {
-          "id": "Brazilian Supreme Court",
-          "type": "Institution"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "states",
-          "taxonomy_classification": "HATE",
-          "confidence_reasoning": "Tier 1 (hate model) detected hate speech with high confidence.",
-          "confidence_score": 98.3
-        },
-        {
-          "source": "Author",
-          "target": "Brazilian Supreme Court",
-          "interaction_type": "is_taken_to",
-          "taxonomy_classification": "HATE",
-          "confidence_reasoning": "Tier 1 (hate model) detected hate speech with high confidence.",
-          "confidence_score": 98.3
-        }
-      ]
-    }
-  },
-  {
-    "id": 6,
-    "original_text": "multiple siblings can grow up in the same house, with the same parents, and have completely different childhoods.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        },
-        {
-          "id": "childhood",
-          "type": "concept"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "childhood",
-          "interaction_type": "experiences",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        }
-      ]
-    }
-  },
-  {
-    "id": 7,
-    "original_text": "Minha filha é autista e fez 18 anos e falou que queria ver esse filme pq agora pode ver filme de terror, levei ela pra ver no cinema, ela se assustou com o boneco lá com tambor, dormiu, assustou de novo, dormiu, e no fim se divertiu. Foi maravilhoso passar esse momento com ela.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "interacts",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        }
-      ],
-      "_extraction_note": "KG extraction failed — direct classification applied"
-    }
-  },
-  {
-    "id": 8,
-    "original_text": "Eu amava esse live action quando eu era criança mano, quando anunciaram a estreia desse filme eu fui correndo assistir de tanta empolgação que eu estava, minha mente de 8 anos achava esse estilo a coisa mais linda do mundo hsksksksksk",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "remembers",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Tier 2 (multilingual sentiment model) detected 'positive' sentiment.",
-          "confidence_score": 85.92
-        }
-      ]
-    }
-  },
-  {
-    "id": 9,
-    "original_text": "EL PROBLEMA NO ES QUE TRABAJE SI NO LA DESORGANIZACION MAÑANA SE PONEN 50 MAS A TRABAJAR ASI EN LAS CALLES DEJANDOLA PUERCAS CON PELOS, BASURA Y SE HACE EL CHIQUERO DE CIUDAD PERO ERES TAN ESTUPIDA QUE NO LO VAS A ENTENDER",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        },
-        {
-          "id": "Police",
-          "type": "Group"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "insults",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        },
-        {
-          "source": "Author",
-          "target": "Police",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        }
-      ]
-    }
-  },
-  {
-    "id": 10,
-    "original_text": "cuando veo parejas asi me dan ganas de decir tu novio no tiene un \"size kink\" es simplemente medio pedofilo y si fuera legal cojerse a una de 11, lo haría",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "interacts",
-          "taxonomy_classification": "RADICALISM",
-          "confidence_reasoning": "The text systematically dehumanizes a group (pedophiles) and implies they should be excluded from society.",
-          "confidence_score": 100.0
-        }
-      ],
-      "_extraction_note": "KG extraction failed — direct classification applied"
-    }
-  },
-  {
-    "id": 11,
-    "original_text": "Pedir la opinión de Twitter es inútil, hay gente que la odia por joder, otras que la odian por razones pelotudas y otros que la odian por cosas con sentido y lo mismo del otro lado, mejor mira la serie y arma tu propia opinión en este caso por que acá no ayudan.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Twitter",
-          "type": "Institution"
-        },
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Twitter",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 (multilingual sentiment model) detected 'negative' sentiment.",
-          "confidence_score": 92.54
-        }
-      ]
-    }
-  },
-  {
-    "id": 12,
-    "original_text": "Men and women still need each other. This weird extreme of pretending like sexes can be segregated and work without each other is silly. We would all die within a couple years.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Men",
-          "type": "Group"
-        },
-        {
-          "id": "Women",
-          "type": "Group"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Men",
-          "interaction_type": "believes",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 (sentiment model) detected 'negative' sentiment.",
-          "confidence_score": 81.4
-        },
-        {
-          "source": "Author",
-          "target": "Women",
-          "interaction_type": "believes",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 (sentiment model) detected 'negative' sentiment.",
-          "confidence_score": 81.4
-        }
-      ]
-    }
-  },
-  {
-    "id": 13,
-    "original_text": "You swore not to lay your hands on Charlie. But you just couldn’t help yourself, could you? You fucking creep. You’re always doing that. And I hate it.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "interacts",
-          "taxonomy_classification": "VIOLATED",
-          "confidence_reasoning": "The text describes a physical altercation that has already happened.",
-          "confidence_score": 100.0
-        }
-      ],
-      "_extraction_note": "KG extraction failed — direct classification applied"
-    }
-  },
-  {
-    "id": 14,
-    "original_text": "If that kind of thing happened to me. I would not say anything to the police, and I would set fire to the house. No mercy.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        },
-        {
-          "id": "Police",
-          "type": "Institution"
-        },
-        {
-          "id": "House",
-          "type": "Location"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "threatens",
-          "taxonomy_classification": "THREAT",
-          "confidence_reasoning": "The text explicitly mentions setting fire to a house, which is a direct threat of physical harm.",
-          "confidence_score": 100.0
-        },
-        {
-          "source": "Author",
-          "target": "Police",
-          "interaction_type": "refuses_to_report",
-          "taxonomy_classification": "VIOLATED",
-          "confidence_reasoning": "The text describes a violent act as a response to a situation, indicating direct personal violence.",
-          "confidence_score": 100.0
-        },
-        {
-          "source": "Author",
-          "target": "House",
-          "interaction_type": "plans_to_damage",
-          "taxonomy_classification": "VIOLATED",
-          "confidence_reasoning": "The text describes a violent act that has already happened or is being actively planned.",
-          "confidence_score": 100.0
-        }
-      ]
-    }
-  },
-  {
-    "id": 15,
-    "original_text": "So done with this shit. Your mental health problems are your responsibility, and we will not let you blackmail society into participating in your dysfunction so that you can avoid the work of fixing yourself.",
-    "analysis": {
-      "entities": [
-        {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        },
-        {
-          "id": "Society",
-          "type": "Group"
-        }
-      ],
-      "relationships": [
-        {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "blames",
-          "taxonomy_classification": "VIOLATED",
-          "confidence_reasoning": "The text describes a situation where physical harm is being described as already happened or being actively planned.",
-          "confidence_score": 100.0
-        },
-        {
-          "source": "Author",
-          "target": "Society",
-          "interaction_type": "threatens",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 (sentiment model) detected 'negative' sentiment.",
-          "confidence_score": 92.92
-        },
-        {
-          "source": "Society",
-          "target": "Author",
-          "interaction_type": "refuses",
-          "taxonomy_classification": "RADICALISM",
-          "confidence_reasoning": "The text targets individuals with mental health problems, implying they are a dysfunctional group that society should not support.",
-          "confidence_score": 100.0
+          "target": "Extroverts",
+          "interaction_type": "compares",
+          "taxonomy_classification": "EXTREMIST",
+          "confidence_reasoning": "The text contains a confrontational tone and an absolute question ('Why???') which indicates a strong emotional stance and a desire to provoke a reaction.",
+          "accuracy": "80%"
         }
       ]
     }
