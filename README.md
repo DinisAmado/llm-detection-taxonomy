@@ -1,85 +1,156 @@
-# llm-detection-taxonomy
-Python project to classify different types of speech
-# Two-Stage Open-Source Ensemble: Intention Detection for SNA
+# SNA Analysis API — Entity Extraction and Relationship Classification
 
-This project implements a robust, two-stage Natural Language Processing (NLP) pipeline for Knowledge Graph extraction and intention classification in social media contexts. The solution utilizes an **Open-Source Ensemble** hosted on the Hugging Face Hub, removing dependencies on proprietary APIs.
+This project is a **Social Network Analysis (SNA)** tool powered by LLMs and NLP models. It extracts entities (Persons, Groups, Institutions, Locations) and classifies the interactions between them through a **3-tier cascade pipeline**, detecting everything from basic sentiments to extremist rhetoric or direct threats.
 
-## Architecture Overview
+---
 
-The system utilizes a **Segmented Model Architecture** to maximize accuracy across different linguistic taxonomies:
+## Features
 
-### Stage 1: Base Graph Extractor (NER & RE)
-A large-scale generative model (**Llama 3.1 8B Instruct**) performs Named Entity Recognition (NER) and Relation Extraction (RE).
-* **Input:** Raw social media posts or text lines.
-* **Output:** A base JSON schema containing socially relevant entities and their core interactions (Source -> Target -> Interaction).
+- **Social Graph Extraction:** Identifies entities and interaction verbs using Llama-3.1-8B.
+- **3-Tier Cascade Classification:**
+  - **Tier 1:** Hate Speech filter (RoBERTa).
+  - **Tier 2:** Sentiment baseline (Multilingual RoBERTa).
+  - **Tier 3:** Severity escalation via LLM (Llama-3) for categories such as `EXTREMIST`, `RADICALISM`, `VIOLATED`, and `THREAT`.
+- **Automatic Ingestion:** Script to import Hugging Face datasets (EN, ES, PT, FR) directly into the system.
+- **Dual Persistence:** Results saved to JSON files for quick lookup and to a SQLite database for structured analysis.
 
-### Stage 2: Taxonomy Routing
-Interactions identified in Stage 1 are routed through specialized model groups based on their context:
-* **Group A (Sentiment/Emotion):** Powered by `twitter-roberta-base-sentiment-latest` for sentiment analysis.
-* **Group B (Hate/Threat):** Powered by `roberta-hate-speech-dynabench-r4-target` to detect toxicity and direct threats.
-* **Group C (Reasoners):** Powered by `Meta-Llama-3-8B-Instruct` for complex ideological analysis, such as Radicalism or Extremism.
+---
 
-## Tech Stack
+## Prerequisites
 
-* **Language:** Python 3.10+
-* **Inference:** Hugging Face Inference API (Serverless)
-* **Parallelization:** `ThreadPoolExecutor` for batch processing optimization
-* **Key Libraries:** `huggingface_hub`, `python-dotenv`, `concurrent.futures`
+Before you begin, make sure you have the following installed:
 
-## Setup and Execution
+- **Python 3.9+**
+- **Pip** (Python package manager)
+- **Hugging Face Token (`HF_TOKEN`):** Required to access models via the Inference API. Get yours at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
 
-### 1. Prerequisites
-* Install dependencies: `pip install huggingface_hub python-dotenv`
-* Create a `.env` file in the root directory with your access token:
-    ```env
-    HF_TOKEN=your_huggingface_token_here
-    ```
+---
 
-### 2. Running the Pipeline
-The script `detect.py` automatically processes the `examples.txt` file and handles API rate limits using exponential backoff.
+## Installation
+
+**1. Clone the repository** (or organize the files in a folder):
 
 ```bash
-python detect.py
-
+mkdir sna-analysis && cd sna-analysis
+# Place api.py, detect.py, ingest.py, and requirements.txt inside the src/ folder
 ```
 
-## Output Schema (JSON)
-The final output is stored in results/extraction_results.json, featuring a rich schema designed for Neo4j Knowledge Graph injection:
+**2. Create a virtual environment:**
 
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+# or
+.\venv\Scripts\activate   # Windows
+```
+
+**3. Install dependencies:**
+
+```bash
+pip install -r requirements.txt
+```
+
+**4. Set up environment variables:**
+
+Create a `.env` file in the project root:
+
+```env
+HF_TOKEN=your_token_here
+```
+
+**5. Create the required directories:**
+
+```bash
+mkdir logs results data
+```
+
+---
+
+## How to Run
+
+### 1. Start the API (Backend)
+
+The API must be running for real-time processing or ingestion to work.
+
+```bash
+uvicorn src.api:app --reload
+```
+
+> **Interactive Docs (Swagger):** Visit [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to test the endpoints manually.
+
+### 2. Run Local Batch Processing
+
+If you have a `data/examples.txt` file with one sentence per line, you can run the detection script directly:
+
+```bash
+python src/detect.py
+```
+
+Results will be saved to `results/extraction_results.json`.
+
+### 3. Ingest Real Datasets
+
+To populate the database with data from Hugging Face (e.g. Measuring Hate Speech, HatEval):
+
+```bash
+# Ingest 100 Portuguese texts
+python src/ingest.py --lang PT --limit 100 --workers 2
+
+# Ingest 50 English texts
+python src/ingest.py --lang EN --limit 50
+```
+
+Data will be processed by the API and stored in `results/sna.db`.
+
+---
+
+## Classification Structure (Hierarchy)
+
+The system classifies relationships following a descending severity order:
+
+| Level | Category | Description |
+|---|---|---|
+| 1 | `EXTREMIST` | Calls for terrorism or mass violence. |
+| 2 | `RADICALISM` | Systematic dehumanization of groups. |
+| 3 | `VIOLATED` | Description of physical violence that occurred. |
+| 4 | `THREAT` | Explicit threats directed at a person or group. |
+| 5 | `HATE` | Hate speech detected by Tier 1. |
+| 6 | `EMOTIONAL` | Negative sentiment (Tier 2). |
+| 7 | `SENTIMENTAL` | Positive sentiment (Tier 2). |
+| 8 | `NEUTRAL` | None of the above. |
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/analyze` | Analyzes a single text and returns the graph + category. |
+| `POST` | `/analyze/batch` | Processes multiple texts at once. |
+| `GET` | `/results` | Lists all results saved in the JSON file. |
+| `GET` | `/stats` | Returns global statistics (avg entities, category counts). |
+| `DELETE` | `/results` | Clears the results history. |
+
+---
+
+## Sample Output (JSON)
+
+```json
 {
-  "id": 13,
-  "original_text": "You swore not to lay your hands on Charlie...",
-  "analysis": {
-    "entities": [...],
-    "relationships": [
-      {
-        "source": "Author",
-        "target": "Target",
-        "interaction_type": "hates",
-        "taxonomy_classification": "THREAT",
-        "confidence_reasoning": "Group B Encoder detected hate speech.",
-        "accuracy": "99.99%"
-      }
-    ]
-  }
+  "taxonomy_category": "THREAT",
+  "extracted_entities": [
+    {"id": "Author", "type": "Person"},
+    {"id": "Target", "type": "Person"}
+  ],
+  "detected_relations": [
+    {
+      "source": "Author",
+      "target": "Target",
+      "interaction_type": "threatens",
+      "taxonomy_classification": "THREAT",
+      "confidence_score": 95.0,
+      "confidence_reasoning": "Explicit threat to cause physical harm to the target's property."
+    }
+  ]
 }
-
-## Taxonomy Compliance
-
-The system strictly adheres to the 7 official categories required for the project:
-
-EMOTIONAL
-
-EXTREMIST
-
-HATE
-
-RADICALISM
-
-SENTIMENTAL
-
-THREAT
-
-VIOLATED
-
-Note: Neutral interactions are dynamically mapped to SENTIMENTAL to ensure data integrity and 100% compatibility with the final taxonomy.
+```
