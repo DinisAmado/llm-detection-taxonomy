@@ -7,3 +7,10 @@ datasets
 requests
 transformers
 torch
+langdetect 
+networkx
+matplotlib
+pyvis
+scipy
+streamlit
+pandas

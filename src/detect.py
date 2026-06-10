@@ -9,136 +9,244 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 
+# Optional dependencies
+try:
+    from langdetect import detect as _langdetect
+    _HAS_LANGDETECT = True
+except ImportError:
+    _HAS_LANGDETECT = False
+
+try:
+    import emoji as _emoji_lib
+    _HAS_EMOJI = True
+except ImportError:
+    _HAS_EMOJI = False
+
+# ─────────────────────────────────────────────
+# Configuration & Paths
+# ─────────────────────────────────────────────
 JSON_FILE = "results/extraction_results.json"
 LOG_FILE  = "logs/detection_and_api_log.txt"
 DATA_FILE = "data/examples.txt"
 
-_formatter = logging.Formatter("[%(levelname)s] %(asctime)s — %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
-_file_handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8")
+os.makedirs("logs", exist_ok=True)
+os.makedirs("results", exist_ok=True)
+
+# ─────────────────────────────────────────────
+# Logging Setup
+# ─────────────────────────────────────────────
+_formatter = logging.Formatter(
+    "[%(levelname)s] %(asctime)s — %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+)
+_file_handler = logging.handlers.RotatingFileHandler(
+    LOG_FILE, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+)
 _file_handler.setFormatter(_formatter)
 _console_handler = logging.StreamHandler()
 _console_handler.setFormatter(_formatter)
+
 logging.basicConfig(level=logging.INFO, handlers=[_console_handler, _file_handler])
 logger = logging.getLogger(__name__)
 
+# ─────────────────────────────────────────────
+# API Client & Models
+# ─────────────────────────────────────────────
 load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
 client   = InferenceClient(token=HF_TOKEN)
 
-# Stage 1: entity/relationship extraction
 STAGE1_MODEL = "meta-llama/Llama-3.1-8B-Instruct"
 
-# Tier 1: hate speech filter
-MODEL_GROUP_B = "facebook/roberta-hate-speech-dynabench-r4-target"
-# Tier 2: sentiment baseline (EN-optimized primary, multilingual fallback)
+MODEL_GROUP_B       = "facebook/roberta-hate-speech-dynabench-r4-target"
 MODEL_GROUP_A       = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 MODEL_GROUP_A_MULTI = "lxyuan/distilbert-base-multilingual-cased-sentiments-student"
-# Tier 3: severe category escalation via LLM
-MODEL_GROUP_C = "meta-llama/Meta-Llama-3-8B-Instruct"
+MODEL_GROUP_C       = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 GROUP_C_LABELS = {"EXTREMIST", "RADICALISM", "VIOLATED", "THREAT"}
 
-# Confidence thresholds
-THRESHOLD_B = 0.75   # hate model minimum score to accept HATE
-THRESHOLD_A = 0.60   # sentiment model minimum score to escalate
-THRESHOLD_C = 0.85   # LLM minimum confidence to accept severe label
-MAX_RELS_PER_ENTRY = 10  # cap to control API cost
+# ─────────────────────────────────────────────
+# Thresholds & Limits
+# ─────────────────────────────────────────────
+THRESHOLD_B = 0.75   
+THRESHOLD_A = 0.60   
+THRESHOLD_C = 0.85   
+MAX_RELS_PER_ENTRY   = 10   
+CLASSIFIER_MAX_CHARS = 500
 
+NON_ENGLISH_LANGS = {"pt", "es", "fr", "de", "it", "nl", "ar", "zh", "ru", "ja", "ko"}
 
+PT_SLANG = {
+    "vc": "você", "vcs": "vocês", "tb": "também", "tbm": "também",
+    "tô": "estou", "to": "estou", "tá": "está", "ta": "está",
+    "q": "que", "pq": "porque", "blz": "beleza", "mt": "muito",
+    "mto": "muito", "pfv": "por favor", "pf": "por favor",
+    "obg": "obrigado", "n": "não", "ñ": "não", "hj": "hoje",
+    "msm": "mesmo", "cmg": "comigo", "c": "com", "kd": "cadê",
+    "flw": "falou", "naum": "não", "nn": "não",
+    "kkk": "risos", "kkkk": "risos", "kkkkk": "risos",
+    "haha": "risos", "hahaha": "risos", "rs": "risos", "rsrs": "risos",
+    "xq": "porque", "tmb": "también", "tbn": "también",
+    "k": "que", "d": "de", "aki": "aquí", "xfa": "por favor",
+}
+
+# ─────────────────────────────────────────────
+# Text Normalisation
+# ─────────────────────────────────────────────
+def normalize_text(text: str, lang: str = "pt") -> str:
+    if _HAS_EMOJI:
+        try:
+            text = _emoji_lib.demojize(text, language=lang if lang in ("pt", "es") else "en")
+        except TypeError:
+            text = _emoji_lib.demojize(text)
+    else:
+        text = re.sub(r"[\U00010000-\U0010FFFF\U0001F300-\U0001F9FF\u2600-\u27BF]+", " ", text, flags=re.UNICODE)
+
+    text = re.sub(r"https?://\S+|www\.\S+", "", text)
+    text = re.sub(r"@\w+", "@user", text)
+    text = re.sub(r"#(\w+)", r"\1", text)
+
+    # Expand abbreviations only for supported languages
+    if lang in ["pt", "es"]:
+        for abbr, full in PT_SLANG.items():
+            text = re.sub(rf"\b{re.escape(abbr)}\b", full, text, flags=re.IGNORECASE)
+
+    text = text.lower()
+    text = re.sub(r"(.)\1{2,}", r"\1\1", text)
+    text = re.sub(r"([!?.]){2,}", r"\1\1", text)
+    text = re.sub(r"\s+", " ", text).strip()
+
+    return text
+
+def truncate_for_classifier(text: str, max_chars: int = CLASSIFIER_MAX_CHARS) -> str:
+    return text[:max_chars]
+
+def detect_language(text: str, default: str = "pt") -> str:
+    if not _HAS_LANGDETECT:
+        return default
+    try:
+        return _langdetect(text)
+    except Exception:
+        return default
+
+# ─────────────────────────────────────────────
+# Prompts
+# ─────────────────────────────────────────────
 STAGE_1_PROMPT = """
 You are an expert Intelligence Analyst specialized in Social Network Analysis (SNA).
-The text you will receive is written in {lang}. Interpret it accordingly.
+The text you will receive is written in [LANG]. Interpret it accordingly.
 Your task is to extract a base graph (Entities and Relationships) from the text.
 
 ENTITY RULES:
-- Extract ONLY socially relevant entities. Valid types: Person, Group, Institution, Location.
-- "Person" = a human individual (real or abstract like "Author", "Target").
-- "Group" = a collective of people (e.g. "immigrants", "police", "team").
-- "Institution" = an organisation, company, government body, court, or platform.
-- "Location" = a physical or virtual place (city, country, building, website).
-- STRICTLY DO NOT extract objects, animals, concepts, emotions, or products.
-  BAD: "vinito" (drink), "serie" (product), "cuarto" (room), "house" (object),
-       "childhood" (concept), "comfort zone" (concept), "quadro" (object).
-  GOOD: "Author", "Target", "Brazilian Supreme Court", "Twitter", "Police".
-- entity type must be EXACTLY one of: Person, Group, Institution, Location.
-  Never use "concept", "object", "activity", or any other custom type.
-- Replace all pronouns with "Author" (the writer) or "Target" (the person addressed).
+1. Extract ONLY explicit, concrete entities from these 4 types: Person, Group, Institution, Location.
+   - "Person": A specific named human.
+   - "Group": A specific collective of humans explicitly named in the text (e.g., "POLICE", "IMMIGRANTS").
+   - "Institution": Specific organizations, companies, or governments.
+   - "Location": Physical or geopolitical places.
+
+2. ID EXTRACTION & NORMALIZATION (STRICT):
+   - EXACT MATCH: Use the exact words found in the text for the entity ID. DO NOT group, categorize, or translate terms. That is the user's job, not yours.
+   - UPPERCASE: Convert all extracted IDs to UPPERCASE to maintain uniformity (e.g., "InternalCase" must become "INTERNALCASE").
+   - NO PRONOUNS/FRAGMENTS: Do NOT extract pronouns (he, she, they, ils, nous) or vague/generic nouns ("guy", "someone", "mec", "oiseau"). If the entity is not a concrete noun phrase, ignore it.
+
+3. THE "AUTHOR" & "TARGET" EXCEPTION:
+   - If the text uses first-person pronouns (I, me, eu, je) to express an action, map it to the exact ID: "AUTHOR".
+   - If the text uses second-person pronouns (you, tu, vc, vous) as the recipient of an action, map it to the exact ID: "TARGET".
+   - NEVER use variations like "Author", "author", or "Target". They MUST be uppercase.
+   - NEVER create "AUTHOR" or "TARGET" if a real named entity covers the role.
 
 RELATIONSHIP RULES:
-- Extract relationships ONLY between two valid social entities (Person/Group/Institution).
-- Do NOT create relationships involving objects, locations, or concepts.
-- interaction_type must be a specific, active social verb (e.g. "criticizes", "threatens").
-- DO NOT extract structural or trivial relationships.
-  BAD: sibling--grows_up_in-->house, parent--resides_in-->house,
-       Author--drinks-->vinito, Author--watches-->serie, Author--visits-->supermarket.
-  GOOD: Author--threatens-->Target, Group--attacks-->Institution, Author--insults-->Target.
-- If the text has no meaningful social interaction between people/groups, return empty arrays.
+- Extract relationships ONLY between two valid extracted entities.
+- interaction_type MUST be a specific, active social verb in English (e.g., "criticizes", "threatens", "supports").
+- If there are no valid concrete entities, return empty arrays.
 
-CRITICAL: OUTPUT ONLY VALID JSON. START DIRECTLY WITH {{:
-{{
-  "entities": [{{"id": "Name", "type": "Type"}}],
-  "relationships": [{{"source": "Name", "target": "Name", "interaction_type": "Verb"}}]
-}}
-"""
+FEW-SHOT EXAMPLES:
+Text: "I hate Muslims."
+Output:
+{
+  "entities": [{"id": "AUTHOR", "type": "Person"}, {"id": "MUSLIMS", "type": "Group"}],
+  "relationships": [{"source": "AUTHOR", "target": "MUSLIMS", "interaction_type": "expresses hatred toward"}]
+}
 
+Text: "Trump threatens immigrants at the border."
+Output:
+{
+  "entities": [{"id": "TRUMP", "type": "Person"}, {"id": "IMMIGRANTS", "type": "Group"}, {"id": "BORDER", "type": "Location"}],
+  "relationships": [{"source": "TRUMP", "target": "IMMIGRANTS", "interaction_type": "threatens"}]
+}
+
+Text: "O Governo local é corrupto e a Lyonnaise vai roubar a região."
+Output:
+{
+  "entities": [{"id": "GOVERNO LOCAL", "type": "Institution"}, {"id": "LYONNAISE", "type": "Institution"}, {"id": "REGIÃO", "type": "Location"}],
+  "relationships": [{"source": "LYONNAISE", "target": "REGIÃO", "interaction_type": "exploits"}]
+}
+
+OUTPUT ONLY VALID JSON (no markdown formatting, no explanations). Start your response exactly with {:
+{
+  "entities": [{"id": "NAME IN UPPERCASE", "type": "Type"}],
+  "relationships": [{"source": "SOURCE_ID", "target": "TARGET_ID", "interaction_type": "Verb"}]
+}
+""" 
 
 TIER3_PROMPT_TEMPLATE = """
 You are a content moderation specialist. Analyze the relationship below and
 decide if the text clearly belongs to one of these SEVERE categories:
 
-  EXTREMIST  — calls for terrorism, mass violence, or extermination of a group
-  RADICALISM — systematic dehumanization of a group, genocidal rhetoric,
-               calls to strip rights from an entire category of people
-  VIOLATED   — direct personal violence: assault, arson, physical harm described
-               as already happened or being actively planned
-  THREAT     — explicit threat directed at a specific person or group
+  EXTREMIST  — calls for terrorism, mass violence, or extermination of a group.
+  RADICALISM — systematic dehumanization of an ENTIRE demographic or social group.
+  VIOLATED   — direct physical violence/harm described as already happened or actively planned.
+  THREAT     — explicit threat to inflict physical harm or severe damage.
 
 Relation: {source!r} {interaction} {target!r}
 Full text: {text!r}
 
 CLASSIFICATION BOUNDARIES — read carefully before deciding:
-- Rudeness, insults, swearing, or calling someone stupid → NOT a severe category.
-- Complaining about a workplace, city, or social situation using strong language
-  → NOT radicalism, even if the language is offensive.
-- Expressing an opinion others disagree with (politics, gender, relationships)
-  → NOT radicalism unless it calls to systematically harm or exclude a group.
+- Refusing to interact with an institution (e.g., "I won't talk to the police") → NOT radicalism.
+- Insulting one specific person (e.g., calling a boyfriend a "pedophile", "creep", or "stupid") → NOT radicalism. It is just an individual insult.
+- Complaining about a workplace or city using strong language → NOT radicalism.
+- Expressing an opinion others disagree with → NOT radicalism unless it calls to systematically harm an entire group.
 - Sarcasm, frustration, venting → NOT severe.
-- "Blackmail" used metaphorically (e.g. "emotional blackmail") → NOT THREAT.
-- Only classify RADICALISM if the text targets an entire group with language that
-  denies their humanity or calls for their exclusion/persecution as a group.
 
 FEW-SHOT EXAMPLES:
-Text: "eres tan estupida que no lo vas a entender" → null (insult, not radicalism)
-Text: "Men and women still need each other, this extreme is silly" → null (opinion)
-Text: "Your mental health problems are your responsibility, fix yourself" → null (harsh opinion)
+Text: "tu novio es medio pedofilo" → null (insult towards an individual, not radicalism)
+Text: "I would not say anything to the police" → null (refusal to interact, not severe)
 Text: "We should cleanse all [ethnic group] from our country" → RADICALISM
 Text: "I will burn your house down tonight" → THREAT
-Text: "He hit her and she fell to the ground" → VIOLATED
 
 If none of the severe categories clearly applies, set taxonomy_classification to null
 and confidence to 0.0. When in doubt, choose null.
 
-OUTPUT ONLY VALID JSON (no extra text, no markdown fences):
-{{"taxonomy_classification": "LABEL or null", "confidence_reasoning": "one sentence", "confidence": 0.0}}
+OUTPUT ONLY VALID JSON. Keep the confidence_reasoning extremely short (MAXIMUM 8 WORDS):
+{{"taxonomy_classification": "LABEL or null", "confidence_reasoning": "short reason here", "confidence": 0.0}}
 """
 
-
+# ─────────────────────────────────────────────
+# Low-level API Helpers
+# ─────────────────────────────────────────────
 def safe_json_load(content):
     content_str = str(content).strip()
+    
+    if content_str.startswith("```json"):
+        content_str = content_str[7:]
+    if content_str.endswith("```"):
+        content_str = content_str[:-3]
+    content_str = content_str.strip()
+    
     try:
         return json.loads(content_str)
     except json.JSONDecodeError:
         pass
+    
     match = re.search(r"(\{.*\}|\[.*\])", content_str, re.DOTALL)
     if match:
         try:
             return json.loads(match.group(1))
         except json.JSONDecodeError:
             pass
+            
     if content_str:
         logger.warning(f"JSON parse failed — raw: {content_str[:120]!r}")
     return {}
-
 
 def retry_call(fn, retries=3):
     for i in range(retries):
@@ -152,25 +260,24 @@ def retry_call(fn, retries=3):
             logger.warning(f"Retry {i + 1}/{retries}: {e} (waiting {wait:.1f}s)")
             time.sleep(wait)
 
+def call_classif(text: str, model: str):
+    safe_text = truncate_for_classifier(text)
+    return client.text_classification(text=safe_text, model=model)[0]
 
-def call_classif(or_text, sel_model):
-    return client.text_classification(text=or_text, model=sel_model)[0]
-
-
-def call_complet(sel_model, l_info=None, max_tokens=150, temperature=0.1):
-    if l_info is None:
-        l_info = []
+def call_complet(model: str, messages: list, max_tokens: int = 150, temperature: float = 0.1):
     response = client.chat_completion(
-        model=sel_model,
-        messages=l_info,
+        model=model,
+        messages=messages,
         max_tokens=max_tokens,
         temperature=temperature,
     )
     return response.choices[0].message.content
 
-
-def _tier1_group_b(original_text):
-    res = retry_call(lambda: call_classif(original_text, MODEL_GROUP_B))
+# ─────────────────────────────────────────────
+# Classification Tiers
+# ─────────────────────────────────────────────
+def _tier1_group_b(text: str):
+    res = retry_call(lambda: call_classif(text, MODEL_GROUP_B))
     if res.label != "hate" or res.score < THRESHOLD_B:
         return None
     return {
@@ -179,37 +286,38 @@ def _tier1_group_b(original_text):
         "confidence_score": round(res.score * 100, 2),
     }
 
+def _tier2_group_a(text: str, lang: str = "pt"):
+    def _classify_and_map(model: str):
+        res = retry_call(lambda: call_classif(text, model))
+        if res.score >= THRESHOLD_A and res.label != "neutral":
+            label = "SENTIMENTAL" if res.label == "positive" else "EMOTIONAL"
+            return {
+                "taxonomy_classification": label,
+                "confidence_reasoning": (
+                    f"Tier 2 detected {res.label!r} sentiment "
+                    f"(model: {model.split('/')[-1]}, score: {res.score:.2f})."
+                ),
+                "confidence_score": round(res.score * 100, 2),
+            }
+        return None
 
-def _tier2_group_a(original_text):
-    # Primary model (EN-optimized)
-    res = retry_call(lambda: call_classif(original_text, MODEL_GROUP_A))
-    if res.score >= THRESHOLD_A and res.label != "neutral":
-        label = "SENTIMENTAL" if res.label == "positive" else "EMOTIONAL"
-        return {
-            "taxonomy_classification": label,
-            "confidence_reasoning": f"Tier 2 (sentiment model) detected {res.label!r} sentiment.",
-            "confidence_score": round(res.score * 100, 2),
-        }
+    if lang not in NON_ENGLISH_LANGS:
+        result = _classify_and_map(MODEL_GROUP_A)
+        if result:
+            return result
 
-    # Fallback: multilingual model (PT / ES / FR)
-    res_multi = retry_call(lambda: call_classif(original_text, MODEL_GROUP_A_MULTI))
-    if res_multi.score >= THRESHOLD_A and res_multi.label != "neutral":
-        label = "SENTIMENTAL" if res_multi.label == "positive" else "EMOTIONAL"
-        return {
-            "taxonomy_classification": label,
-            "confidence_reasoning": f"Tier 2 (multilingual sentiment model) detected {res_multi.label!r} sentiment.",
-            "confidence_score": round(res_multi.score * 100, 2),
-        }
+    return _classify_and_map(MODEL_GROUP_A_MULTI)
 
-    return None
-
-
-def _tier3_group_c(original_text, source, interaction, target):
+def _tier3_group_c(text: str, source: str, interaction: str, target: str):
     prompt = TIER3_PROMPT_TEMPLATE.format(
-        source=source, interaction=interaction, target=target, text=original_text,
+        source=source, interaction=interaction, target=target, text=text,
     )
     res_text = retry_call(
-        lambda: call_complet(MODEL_GROUP_C, [{"role": "user", "content": prompt}], max_tokens=200)
+        lambda: call_complet(
+            MODEL_GROUP_C,
+            [{"role": "user", "content": prompt}],
+            max_tokens=200,
+        )
     )
     data       = safe_json_load(res_text)
     label      = data.get("taxonomy_classification")
@@ -227,32 +335,24 @@ def _tier3_group_c(original_text, source, interaction, target):
         "confidence_score": round(confidence * 100, 2),
     }
 
-
-def classify_relation(original_text, rel):
+def classify_relation(text: str, rel: dict, lang: str = "pt") -> dict:
     source      = rel.get("source", "Unknown")
     target      = rel.get("target", "Unknown")
     interaction = rel.get("interaction_type", "interaction")
 
     try:
-        # Tier 1: hate speech
-        t1 = _tier1_group_b(original_text)
-        if t1:
-            return t1
+        t1 = _tier1_group_b(text)
+        if t1: return t1
 
-        # Tier 2: sentiment baseline
-        t2 = _tier2_group_a(original_text)
-
+        t2 = _tier2_group_a(text, lang=lang)
         if t2 and t2["taxonomy_classification"] == "SENTIMENTAL":
-            return t2  # positive sentiment is terminal, no need to escalate
+            return t2
 
-        # Tier 3: always run — catches severe labels even when Tier 2 finds nothing
-        t3 = _tier3_group_c(original_text, source, interaction, target)
+        t3 = _tier3_group_c(text, source, interaction, target)
         if t3["taxonomy_classification"] != "NEUTRAL":
             return t3
 
-        # Tier 3 found nothing severe — return Tier 2 signal (EMOTIONAL) if present
-        if t2:
-            return t2
+        if t2: return t2
 
         return {
             "taxonomy_classification": "NEUTRAL",
@@ -261,68 +361,170 @@ def classify_relation(original_text, rel):
         }
 
     except Exception as e:
-        logger.error(f"classify_relation failed for {source!r} {interaction} {target!r}: {e}", exc_info=True)
+        logger.error(
+            f"classify_relation failed for {source!r} {interaction} {target!r}: {e}",
+            exc_info=True,
+        )
         return {
             "taxonomy_classification": "NEUTRAL",
             "confidence_reasoning": f"Fallback due to API error: {e}",
             "confidence_score": 0.0,
         }
 
+# ─────────────────────────────────────────────
+# Graph Cleaning Guardrail
+# ─────────────────────────────────────────────
+def clean_extracted_graph(graph: dict) -> dict:
+    # Failsafe filter to ensure strict compliance with SNA rules
+    if not graph:
+        return graph
+        
+    author_aliases = {"EU", "YO", "I", "ME", "MIM", "NÓS", "NOS", "JE", "MOI", "NOUS"}
+    target_aliases = {"TU", "VOCÊ", "VC", "YOU", "VOUS", "TOI", "THEM", "HE", "SHE", "HIM", "HER"}
+    valid_types    = {"Person", "Group", "Institution", "Location"}
+    
+    valid_entity_ids = set()
+    cleaned_entities = []
+    
+    # 1. Clean Entities
+    for ent in graph.get("entities", []):
+        ent_id   = str(ent.get("id", "")).strip().upper()
+        ent_type = str(ent.get("type", "")).strip()
+        
+        if not ent_id:
+            continue
+            
+        if ent_id in author_aliases:
+            ent_id   = "AUTHOR"
+            ent_type = "Person"
+        elif ent_id in target_aliases:
+            ent_id   = "TARGET"
+            ent_type = "Person"
+            
+        if ent_type not in valid_types:
+            ent_type = "Group"
+            
+        ent["id"]   = ent_id
+        ent["type"] = ent_type
+        
+        # Prevent duplicate nodes 
+        if ent_id not in valid_entity_ids:
+            cleaned_entities.append(ent)
+            valid_entity_ids.add(ent_id)
+            
+    graph["entities"] = cleaned_entities
+    
+    # 2. Clean Relationships
+    cleaned_relationships = []
+    for rel in graph.get("relationships", []):
+        src = str(rel.get("source", "")).strip().upper()
+        tgt = str(rel.get("target", "")).strip().upper()
+        
+        if src in author_aliases: src = "AUTHOR"
+        elif src in target_aliases: src = "TARGET"
+        
+        if tgt in author_aliases: tgt = "AUTHOR"
+        elif tgt in target_aliases: tgt = "TARGET"
+        
+        rel["source"] = src
+        rel["target"] = tgt
+        
+        # Only accept relations where both nodes exist in the cleaned entity list
+        if src in valid_entity_ids and tgt in valid_entity_ids and src != tgt:
+            cleaned_relationships.append(rel)
+            
+    graph["relationships"] = cleaned_relationships
+    
+    return graph
 
-def process_entry(idx, text, lang="PT"):
-    logger.info(f"[{idx}] Stage 1: Extraction (lang={lang})")
+# ─────────────────────────────────────────────
+# Entry Processor
+# ─────────────────────────────────────────────
+def process_entry(idx: int, raw_text: str) -> dict:
+    lang = detect_language(raw_text)
+    logger.info(f"[{idx}] Detected language: {lang!r}")
+
+    text = normalize_text(raw_text, lang=lang)
+    logger.info(f"[{idx}] Normalised text: {text[:80]!r}{'…' if len(text) > 80 else ''}")
+
+    logger.info(f"[{idx}] Stage 1: extraction (lang={lang})")
     try:
         s1_res = retry_call(
             lambda: call_complet(
                 STAGE1_MODEL,
                 [
-                    {"role": "system", "content": STAGE_1_PROMPT.format(lang=lang)},
+                    {"role": "system", "content": STAGE_1_PROMPT.replace("[LANG]", lang)},
                     {"role": "user",   "content": text},
                 ],
-                max_tokens=1000,
+                max_tokens=2048,
             )
         )
     except Exception as e:
         logger.error(f"[{idx}] Stage 1 failed: {e}", exc_info=True)
-        return {"id": idx, "original_text": text, "analysis": {}}
+        return {"id": idx, "original_text": raw_text, "normalised_text": text, "analysis": {}}
 
-    graph  = safe_json_load(s1_res)
-    logger.info(f"[{idx}] Graph extracted — {len(graph.get('entities', []))} entities, {len(graph.get('relationships', []))} relationships")
+    graph = safe_json_load(s1_res)
+    graph = clean_extracted_graph(graph)
+    
+    logger.info(
+        f"[{idx}] Graph: {len(graph.get('entities', []))} entities, "
+        f"{len(graph.get('relationships', []))} relationships"
+    )
 
-    # Fallback: empty graph → classify the raw text directly
+    # Fallback applied if API truncates the JSON or returns an empty graph
     if not graph or not graph.get("relationships"):
         logger.warning(f"[{idx}] Empty graph — applying direct text classification")
-        fallback = classify_relation(text, {"source": "Author", "target": "Target", "interaction_type": "interacts"})
+        fallback = classify_relation(
+            text,
+            {"source": "AUTHOR", "target": "TARGET", "interaction_type": "interacts"},
+            lang=lang,
+        )
         graph = {
-            "entities": [{"id": "Author", "type": "Person"}, {"id": "Target", "type": "Person"}],
-            "relationships": [{"source": "Author", "target": "Target", "interaction_type": "interacts", **fallback}],
+            "entities": [
+                {"id": "AUTHOR", "type": "Person"},
+                {"id": "TARGET", "type": "Person"},
+            ],
+            "relationships": [
+                {
+                    "source": "AUTHOR",
+                    "target": "TARGET",
+                    "interaction_type": "interacts",
+                    **fallback,
+                }
+            ],
             "_extraction_note": "KG extraction failed — direct classification applied",
         }
-        return {"id": idx, "original_text": text, "analysis": graph}
+        return {"id": idx, "original_text": raw_text, "normalised_text": text, "analysis": graph}
 
-    # Cap relationships to control API cost
     relationships = graph["relationships"]
     if len(relationships) > MAX_RELS_PER_ENTRY:
-        logger.warning(f"[{idx}] Capping relationships from {len(relationships)} to {MAX_RELS_PER_ENTRY}")
+        logger.warning(
+            f"[{idx}] Capping relationships from {len(relationships)} to {MAX_RELS_PER_ENTRY}"
+        )
         graph["relationships"] = relationships[:MAX_RELS_PER_ENTRY]
 
-    logger.info(f"[{idx}] Stage 2: Routing {len(graph['relationships'])} relationships")
+    logger.info(f"[{idx}] Stage 2: classifying {len(graph['relationships'])} relationships")
     for rel in graph["relationships"]:
         try:
-            result = classify_relation(text, rel)
+            result = classify_relation(text, rel, lang=lang)
             rel.update(result)
-            logger.info(f"[{idx}] {rel.get('source')!r} → {rel.get('target')!r}: {result.get('taxonomy_classification')}")
+            logger.info(
+                f"[{idx}] {rel.get('source')!r} → {rel.get('target')!r}: "
+                f"{result.get('taxonomy_classification')}"
+            )
         except Exception as e:
             logger.error(f"[{idx}] Relation classification failed: {e}", exc_info=True)
 
-    return {"id": idx, "original_text": text, "analysis": graph}
+    return {"id": idx, "original_text": raw_text, "normalised_text": text, "analysis": graph}
 
-
+# ─────────────────────────────────────────────
+# Batch Runner
+# ─────────────────────────────────────────────
 def run_batch_test():
     logger.info("--- Run started ---")
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
-            lines = [l.strip() for l in f if len(l.strip()) > 5]
+            lines = [line.strip() for line in f if len(line.strip()) > 5]
     except FileNotFoundError:
         logger.error(f"Input file not found: {DATA_FILE}")
         return
@@ -331,7 +533,10 @@ def run_batch_test():
     final_results = []
 
     with ThreadPoolExecutor(max_workers=2) as executor:
-        futures = {executor.submit(process_entry, i + 1, text): i for i, text in enumerate(lines)}
+        futures = {
+            executor.submit(process_entry, i + 1, text): i
+            for i, text in enumerate(lines)
+        }
         for future in as_completed(futures):
             try:
                 final_results.append(future.result())
@@ -345,7 +550,6 @@ def run_batch_test():
 
     logger.info(f"Results saved to {JSON_FILE}")
     logger.info("--- Run finished ---")
-
 
 if __name__ == "__main__":
     run_batch_test()

@@ -9,10 +9,41 @@ This project is a **Social Network Analysis (SNA)** tool powered by LLMs and NLP
 - **Social Graph Extraction:** Identifies entities and interaction verbs using Llama-3.1-8B.
 - **3-Tier Cascade Classification:**
   - **Tier 1:** Hate Speech filter (RoBERTa).
-  - **Tier 2:** Sentiment baseline (Multilingual RoBERTa).
+  - **Tier 2:** Sentiment baseline (Multilingual RoBERTa / DistilBERT).
   - **Tier 3:** Severity escalation via LLM (Llama-3) for categories such as `EXTREMIST`, `RADICALISM`, `VIOLATED`, and `THREAT`.
+- **Text Normalisation:** Automatic language detection, emoji demojization, URL/mention scrubbing, slang expansion (PT/ES), and character deduplication before any model call.
+- **Graph Guardrail:** Post-extraction cleaning step that normalises pronouns to `AUTHOR`/`TARGET`, removes duplicate nodes, and filters relationships to only valid entity pairs.
+- **Knowledge Graph Visualisation:** Generates interactive HTML (pyvis/vis.js) and static PNG graphs colour-coded by entity type and severity, plus optional per-category subgraphs.
+- **Graph Analytics:** Computes in-degree, betweenness centrality, and PageRank (influence) for every node and exports a `metrics_report.json` for the dashboard.
+- **Decision Support Dashboard:** Streamlit app with critical alerts, network influencer rankings, and an embedded interactive knowledge graph.
 - **Automatic Ingestion:** Script to import Hugging Face datasets (EN, ES, PT, FR) directly into the system.
 - **Dual Persistence:** Results saved to JSON files for quick lookup and to a SQLite database for structured analysis.
+
+---
+
+## Project Structure
+
+```
+sna-analysis/
+├── src/
+│   ├── detect.py      # Core pipeline: text normalisation, graph extraction, 3-tier classification
+│   ├── api.py         # FastAPI server exposing /analyze, /results, /stats endpoints
+│   ├── ingest.py      # Batch ingestion from Hugging Face datasets into SQLite
+│   ├── kg.py          # Knowledge graph builder: HTML + PNG exports, subgraphs, CLI
+│   ├── analytics.py   # Graph metrics: centrality, PageRank, community detection
+│   └── app.py         # Streamlit decision support dashboard
+├── data/
+│   └── examples.txt   # One sentence per line — input for local batch processing
+├── results/
+│   ├── extraction_results.json
+│   └── sna.db
+├── graphs/
+│   ├── knowledge_graph.html
+│   ├── knowledge_graph.png
+│   └── metrics_report.json
+├── logs/
+└── .env
+```
 
 ---
 
@@ -32,7 +63,7 @@ Before you begin, make sure you have the following installed:
 
 ```bash
 mkdir sna-analysis && cd sna-analysis
-# Place api.py, detect.py, ingest.py, and requirements.txt inside the src/ folder
+# Place all .py files inside the src/ folder
 ```
 
 **2. Create a virtual environment:**
@@ -61,7 +92,7 @@ HF_TOKEN=your_token_here
 **5. Create the required directories:**
 
 ```bash
-mkdir logs results data
+mkdir logs results data graphs
 ```
 
 ---
@@ -102,6 +133,34 @@ python src/ingest.py --lang EN --limit 50
 
 Data will be processed by the API and stored in `results/sna.db`.
 
+### 4. Generate the Knowledge Graph
+
+After the database is populated, run `kg.py` to build the graphs and compute analytics:
+
+```bash
+# Full graph (HTML + PNG)
+python src/kg.py
+
+# Filter by language and severity category
+python src/kg.py --lang PT EN --category HATE THREAT
+
+# Limit to the 50 most-connected entities and export per-category subgraphs
+python src/kg.py --top-entities 50 --subgraphs
+
+# Skip PNG, generate only the interactive HTML
+python src/kg.py --no-png
+```
+
+All outputs (HTML, PNG, `metrics_report.json`) are written to the `graphs/` directory.
+
+### 5. Launch the Dashboard
+
+```bash
+streamlit run src/app.py
+```
+
+> Requires the database (`results/sna.db`) and graph files (`graphs/`) to exist. Run `ingest.py` and `kg.py` first.
+
 ---
 
 ## Classification Structure (Hierarchy)
@@ -127,7 +186,10 @@ The system classifies relationships following a descending severity order:
 |---|---|---|
 | `POST` | `/analyze` | Analyzes a single text and returns the graph + category. |
 | `POST` | `/analyze/batch` | Processes multiple texts at once. |
+| `GET` | `/analyze/health` | Returns the current status of the API pipeline. |
 | `GET` | `/results` | Lists all results saved in the JSON file. |
+| `GET` | `/results/{id}` | Returns a single saved result by numeric ID. |
+| `GET` | `/results/search` | Filters saved results by keyword (case-insensitive). |
 | `GET` | `/stats` | Returns global statistics (avg entities, category counts). |
 | `DELETE` | `/results` | Clears the results history. |
 
@@ -154,3 +216,26 @@ The system classifies relationships following a descending severity order:
   ]
 }
 ```
+
+---
+
+## Supported Datasets (Ingestion)
+
+| Language | Dataset |
+|---|---|
+| EN | `ucberkeley-dlab/measuring-hate-speech` |
+| ES | `valeriobasile/HatEval` |
+| PT | `Paul/hatecheck-portuguese` |
+| FR | `AxelDlv00/ToxiFrench` |
+
+---
+
+## Models Used
+
+| Role | Model |
+|---|---|
+| Graph extraction (Stage 1) | `meta-llama/Llama-3.1-8B-Instruct` |
+| Hate speech detection (Tier 1) | `facebook/roberta-hate-speech-dynabench-r4-target` |
+| Sentiment — English (Tier 2) | `cardiffnlp/twitter-roberta-base-sentiment-latest` |
+| Sentiment — Multilingual (Tier 2) | `lxyuan/distilbert-base-multilingual-cased-sentiments-student` |
+| Severity escalation (Tier 3) | `meta-llama/Meta-Llama-3-8B-Instruct` |

@@ -2,65 +2,50 @@
   {
     "id": 1,
     "original_text": "Me da risa cuando me dicen “¿y qué hiciste este finde?”, como si hubiera hecho paracaidismo o algún deporte extremo. Tengo 30, fui al súper, lavé ropa, ordené mi cuarto, me tomé un vinito y avancé unos capítulos de mi serie.",
+    "normalised_text": "me da risa cuando me dicen “¿y qué hiciste este finde?”, como si hubiera hecho paracaidismo o algún deporte extremo. tengo 30, fui al súper, lavé ropa, ordené mi cuarto, me tomé un vinito y avancé unos capítulos de mi serie.",
     "analysis": {
       "entities": [
         {
-          "id": "Author",
+          "id": "AUTHOR",
           "type": "Person"
         },
         {
-          "id": "Target",
-          "type": "Person"
+          "id": "SUPER",
+          "type": "Location"
+        },
+        {
+          "id": "CUARTO",
+          "type": "Location"
+        },
+        {
+          "id": "SERIE",
+          "type": "Institution"
         }
       ],
       "relationships": [
         {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "RADICALISM",
-          "confidence_reasoning": "The text uses a sarcastic tone to criticize the expectations of others, implying that the speaker's mundane activities are being unfairly judged as boring or unadventurous.",
-          "accuracy": "80%"
+          "source": "AUTHOR",
+          "target": "SUPER",
+          "interaction_type": "visits",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.70).",
+          "confidence_score": 70.16
         },
         {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "asks",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
+          "source": "AUTHOR",
+          "target": "CUARTO",
+          "interaction_type": "cleans",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.70).",
+          "confidence_score": 70.16
         },
         {
-          "source": "Author",
-          "target": "Súper",
-          "interaction_type": "visited",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Author",
-          "target": "Súper",
-          "interaction_type": "purchased",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Author",
-          "target": "Author",
-          "interaction_type": "drinks",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Author",
+          "source": "AUTHOR",
+          "target": "SERIE",
           "interaction_type": "watches",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.70).",
+          "confidence_score": 70.16
         }
       ]
     }
@@ -68,108 +53,533 @@
   {
     "id": 2,
     "original_text": "Hoy lloré: un compañero de trabajo que está endeudado hasta la chota ahorró no almorzando ni comprando nada en todo el día desde hace meses para comprarle un regalo de cumpleaños a la esposa, ayer se lo dió y hoy me mostró emocionado todo lloroso las fotos de ella re contenta",
+    "normalised_text": "hoy lloré: un compañero de trabajo que está endeudado hasta la chota ahorró no almorzando ni comprando nada en todo el día desde hace meses para comprarle un regalo de cumpleaños a la esposa, ayer se lo dió y hoy me mostró emocionado todo lloroso las fotos de ella re contenta",
     "analysis": {
       "entities": [
         {
-          "id": "Author",
+          "id": "COMPANERO DE TRABAJO",
           "type": "Person"
         },
         {
-          "id": "Compañero de trabajo",
-          "type": "Person"
-        },
-        {
-          "id": "Ejemplar",
-          "type": "Person"
-        },
-        {
-          "id": "La esposa",
+          "id": "ESPOSA",
           "type": "Person"
         }
       ],
       "relationships": [
         {
-          "source": "Author",
-          "target": "Compañero de trabajo",
-          "interaction_type": "knows",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Compañero de trabajo",
-          "target": "La esposa",
-          "interaction_type": "cares about",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Author",
-          "target": "Compañero de trabajo",
-          "interaction_type": "admires",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
-        },
-        {
-          "source": "Compañero de trabajo",
-          "target": "Author",
-          "interaction_type": "thanks",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "95%"
-        },
-        {
-          "source": "Compañero de trabajo",
-          "target": "La esposa",
-          "interaction_type": "gave a gift to",
-          "taxonomy_classification": "SENTIMENTAL",
-          "confidence_reasoning": "Neutral interaction mapped to Sentimental.",
-          "accuracy": "90%"
+          "source": "COMPANERO DE TRABAJO",
+          "target": "ESPOSA",
+          "interaction_type": "shows affection toward",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         }
-      ],
-      "_extraction_note": "KG extraction failed — direct classification applied"
+      ]
     }
   },
   {
     "id": 3,
     "original_text": "Why does everyone force introverts to leave their comfort zone, but no one forces extroverts to shut up for a while? Why???",
+    "normalised_text": "why does everyone force introverts to leave their comfort zone, but no one forces extroverts to shut up for a while? why??",
     "analysis": {
       "entities": [
         {
-          "id": "Author",
-          "type": "Person"
-        },
-        {
-          "id": "Target",
-          "type": "Person"
-        },
-        {
-          "id": "extroverts",
+          "id": "EVERYONE",
           "type": "Group"
         },
         {
-          "id": "introverts",
+          "id": "INTROVERTS",
+          "type": "Group"
+        },
+        {
+          "id": "EXTROVERTS",
           "type": "Group"
         }
       ],
       "relationships": [
         {
-          "source": "Author",
-          "target": "Target",
-          "interaction_type": "criticizes",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The statement is an extreme generalization that implies a deliberate and malicious intent from extroverts, which is not necessarily the case. It also uses rhetorical questions to create a sense of outrage and injustice.",
-          "accuracy": "80%"
+          "source": "EVERYONE",
+          "target": "INTROVERTS",
+          "interaction_type": "forces to leave their comfort zone",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
         },
         {
-          "source": "Author",
-          "target": "Extroverts",
-          "interaction_type": "compares",
-          "taxonomy_classification": "EXTREMIST",
-          "confidence_reasoning": "The text contains a confrontational tone and an absolute question ('Why???') which indicates a strong emotional stance and a desire to provoke a reaction.",
-          "accuracy": "80%"
+          "source": "EVERYONE",
+          "target": "EXTROVERTS",
+          "interaction_type": "forces to shut up for a while",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "original_text": "If you’re the type who just wants to get close to the girls, stop! don’t! But if you really know what you’re doing and genuinely want the best for them without having creepy thoughts, then I wish you luck!",
+    "normalised_text": "if you’re the type who just wants to get close to the girls, stop! don’t! but if you really know what you’re doing and genuinely want the best for them without having creepy thoughts, then i wish you luck!",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "GIRLS",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "GIRLS",
+          "interaction_type": "advises",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Tier 2 detected 'positive' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.66).",
+          "confidence_score": 65.54
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "original_text": "I was taken to the Brazilian Supreme Court for saying the most voted \"woman\" in the country is actually a man. After five years of persecution, I won.",
+    "normalised_text": "i was taken to the brazilian supreme court for saying the most voted \"woman\" in the country is actually a man. after five years of persecution, i won.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "BRAZILIAN SUPREME COURT",
+          "type": "Institution"
+        },
+        {
+          "id": "WOMAN",
+          "type": "Person"
+        },
+        {
+          "id": "COUNTRY",
+          "type": "Location"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "BRAZILIAN SUPREME COURT",
+          "interaction_type": "was taken to",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.63).",
+          "confidence_score": 62.62
+        },
+        {
+          "source": "AUTHOR",
+          "target": "WOMAN",
+          "interaction_type": "made a statement about",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.63).",
+          "confidence_score": 62.62
+        },
+        {
+          "source": "AUTHOR",
+          "target": "COUNTRY",
+          "interaction_type": "made a statement about",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.63).",
+          "confidence_score": 62.62
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "original_text": "multiple siblings can grow up in the same house, with the same parents, and have completely different childhoods.",
+    "normalised_text": "multiple siblings can grow up in the same house, with the same parents, and have completely different childhoods.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "PARENTS",
+          "type": "Group"
+        },
+        {
+          "id": "SIBLINGS",
+          "type": "Group"
+        },
+        {
+          "id": "HOUSE",
+          "type": "Location"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "PARENTS",
+          "target": "SIBLINGS",
+          "interaction_type": "raises",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "original_text": "Minha filha é autista e fez 18 anos e falou que queria ver esse filme pq agora pode ver filme de terror, levei ela pra ver no cinema, ela se assustou com o boneco lá com tambor, dormiu, assustou de novo, dormiu, e no fim se divertiu. Foi maravilhoso passar esse momento com ela.",
+    "normalised_text": "minha filha é autista e fez 18 anos e falou que queria ver esse filme porque agora pode ver filme de terror, levei ela pra ver no cinema, ela se assustou com o boneco lá com tambor, dormiu, assustou de novo, dormiu, e no fim se divertiu. foi maravilhoso passar esse momento com ela.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "MINHA FILHA",
+          "type": "Person"
+        },
+        {
+          "id": "AUTISTA",
+          "type": "Group"
+        },
+        {
+          "id": "ELA",
+          "type": "Person"
+        },
+        {
+          "id": "CINEMA",
+          "type": "Institution"
+        },
+        {
+          "id": "BONECO",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "MINHA FILHA",
+          "target": "AUTISTA",
+          "interaction_type": "identifies as",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "MINHA FILHA",
+          "target": "ELA",
+          "interaction_type": "is",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "MINHA FILHA",
+          "target": "CINEMA",
+          "interaction_type": "visited",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "ELA",
+          "target": "BONECO",
+          "interaction_type": "reacted to",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "original_text": "Eu amava esse live action quando eu era criança mano, quando anunciaram a estreia desse filme eu fui correndo assistir de tanta empolgação que eu estava, minha mente de 8 anos achava esse estilo a coisa mais linda do mundo hsksksksksk",
+    "normalised_text": "eu amava esse live action quando eu era criança mano, quando anunciaram a estreia desse filme eu fui correndo assistir de tanta empolgação que eu estava, minha mente de 8 anos achava esse estilo a coisa mais linda do mundo hsksksksksk",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "MANO",
+          "type": "Person"
+        },
+        {
+          "id": "ESTE FILME",
+          "type": "Institution"
+        },
+        {
+          "id": "ESTE ESTILO",
+          "type": "Institution"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "MANO",
+          "interaction_type": "speaks to",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Tier 2 detected 'positive' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.85).",
+          "confidence_score": 84.97
+        },
+        {
+          "source": "AUTHOR",
+          "target": "ESTE FILME",
+          "interaction_type": "expresses enthusiasm for",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Tier 2 detected 'positive' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.85).",
+          "confidence_score": 84.97
+        },
+        {
+          "source": "AUTHOR",
+          "target": "ESTE ESTILO",
+          "interaction_type": "admires",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Tier 2 detected 'positive' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.85).",
+          "confidence_score": 84.97
+        }
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "original_text": "EL PROBLEMA NO ES QUE TRABAJE SI NO LA DESORGANIZACION MAÑANA SE PONEN 50 MAS A TRABAJAR ASI EN LAS CALLES DEJANDOLA PUERCAS CON PELOS, BASURA Y SE HACE EL CHIQUERO DE CIUDAD PERO ERES TAN ESTUPIDA QUE NO LO VAS A ENTENDER",
+    "normalised_text": "el problema no es que trabaje si no la desorganizacion mañana se ponen 50 mas a trabajar asi en las calles dejandola puercas con pelos, basura y se hace el chiquero de ciudad pero eres tan estupida que no lo vas a entender",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "TRABAJADORES",
+          "type": "Group"
+        },
+        {
+          "id": "CIUDAD",
+          "type": "Location"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "TRABAJADORES",
+          "interaction_type": "criticizes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.72).",
+          "confidence_score": 72.26
+        },
+        {
+          "source": "AUTHOR",
+          "target": "CIUDAD",
+          "interaction_type": "describes negatively",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.72).",
+          "confidence_score": 72.26
+        }
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "original_text": "cuando veo parejas asi me dan ganas de decir tu novio no tiene un \"size kink\" es simplemente medio pedofilo y si fuera legal cojerse a una de 11, lo haría",
+    "normalised_text": "cuando veo parejas asi me dan ganas de decir tu novio no tiene un \"size kink\" es simplemente medio pedofilo y si fuera legal cojerse a una de 11, lo haría",
+    "analysis": {
+      "entities": [
+        {
+          "id": "TU NOVIO",
+          "type": "Person"
+        },
+        {
+          "id": "PEDÓFILO",
+          "type": "Group"
+        },
+        {
+          "id": "UNA DE 11",
+          "type": "Person"
+        },
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "TU NOVIO",
+          "interaction_type": "criticizes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.67).",
+          "confidence_score": 66.75
+        },
+        {
+          "source": "AUTHOR",
+          "target": "PEDÓFILO",
+          "interaction_type": "accuses",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.67).",
+          "confidence_score": 66.75
+        },
+        {
+          "source": "AUTHOR",
+          "target": "UNA DE 11",
+          "interaction_type": "mentions",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.67).",
+          "confidence_score": 66.75
+        }
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "original_text": "Pedir la opinión de Twitter es inútil, hay gente que la odia por joder, otras que la odian por razones pelotudas y otros que la odian por cosas con sentido y lo mismo del otro lado, mejor mira la serie y arma tu propia opinión en este caso por que acá no ayudan.",
+    "normalised_text": "pedir la opinión de twitter es inútil, hay gente que la odia por joder, otras que la odian por razones pelotudas y otros que la odian por cosas con sentido y lo mismo del otro lado, mejor mira la serie y arma tu propia opinión en este caso por que acá no ayudan.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "TWITTER",
+          "type": "Institution"
+        },
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "TARGET",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "TARGET",
+          "interaction_type": "expresses frustration with",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.95).",
+          "confidence_score": 95.05
+        }
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "original_text": "Men and women still need each other. This weird extreme of pretending like sexes can be segregated and work without each other is silly. We would all die within a couple years.",
+    "normalised_text": "men and women still need each other. this weird extreme of pretending like sexes can be segregated and work without each other is silly. we would all die within a couple years.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "MEN",
+          "type": "Group"
+        },
+        {
+          "id": "WOMEN",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "MEN",
+          "interaction_type": "believes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: twitter-roberta-base-sentiment-latest, score: 0.84).",
+          "confidence_score": 83.95
+        },
+        {
+          "source": "AUTHOR",
+          "target": "WOMEN",
+          "interaction_type": "believes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: twitter-roberta-base-sentiment-latest, score: 0.84).",
+          "confidence_score": 83.95
+        }
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "original_text": "You swore not to lay your hands on Charlie. But you just couldn’t help yourself, could you? You fucking creep. You’re always doing that. And I hate it.",
+    "normalised_text": "you swore not to lay your hands on charlie. but you just couldn’t help yourself, could you? you fucking creep. you’re always doing that. and i hate it.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "CHARLIE",
+          "type": "Person"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "CHARLIE",
+          "interaction_type": "expresses anger toward",
+          "taxonomy_classification": "HATE",
+          "confidence_reasoning": "Tier 1 (hate model) detected hate speech with high confidence.",
+          "confidence_score": 92.2
+        }
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "original_text": "If that kind of thing happened to me. I would not say anything to the police, and I would set fire to the house. No mercy.",
+    "normalised_text": "if that kind of thing happened to me. i would not say anything to the police, and i would set fire to the house. no mercy.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "POLICE",
+          "type": "Group"
+        },
+        {
+          "id": "HOUSE",
+          "type": "Location"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "POLICE",
+          "interaction_type": "refuses to report to",
+          "taxonomy_classification": "THREAT",
+          "confidence_reasoning": "Explicit threat of arson",
+          "confidence_score": 100.0
+        }
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "original_text": "So done with this shit. Your mental health problems are your responsibility, and we will not let you blackmail society into participating in your dysfunction so that you can avoid the work of fixing yourself.",
+    "normalised_text": "so done with this shit. your mental health problems are your responsibility, and we will not let you blackmail society into participating in your dysfunction so that you can avoid the work of fixing yourself.",
+    "analysis": {
+      "entities": [
+        {
+          "id": "AUTHOR",
+          "type": "Person"
+        },
+        {
+          "id": "SOCIETY",
+          "type": "Group"
+        }
+      ],
+      "relationships": [
+        {
+          "source": "AUTHOR",
+          "target": "SOCIETY",
+          "interaction_type": "blames",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: twitter-roberta-base-sentiment-latest, score: 0.93).",
+          "confidence_score": 93.0
         }
       ]
     }

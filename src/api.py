@@ -5,6 +5,7 @@ from typing import Literal
 import json
 import os
 
+# Importação corrigida para apontar para o ficheiro teste.py
 from src.detect import process_entry
 
 app = FastAPI(
@@ -19,12 +20,10 @@ SEVERITY_ORDER = ["EXTREMIST", "RADICALISM", "VIOLATED", "THREAT", "HATE", "EMOT
 
 class TextPayload(BaseModel):
     text: str
-    lang: Literal["EN", "ES", "PT", "FR"] = "PT"
 
 class BatchEntry(BaseModel):
     id: int = 0
     text: str
-    lang: Literal["EN", "ES", "PT", "FR"] = "PT"
 
 class BatchPayload(BaseModel):
     entries: list[BatchEntry]
@@ -57,7 +56,7 @@ def _load_results() -> list:
     if not os.path.exists(file_path):
         raise HTTPException(
             status_code=404,
-            detail="Results file not found. Run detect_test2.py first.",
+            detail="Results file not found. Run teste.py first.",
         )
     try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -83,7 +82,8 @@ def root():
 )
 def analyze_text(payload: TextPayload):
     try:
-        raw = process_entry(0, payload.text, payload.lang)
+        # Opção A: A API envia apenas o ID (0) e o texto. O idioma será detetado pelo teste.py
+        raw = process_entry(0, payload.text)
         return remap_output(raw)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error processing text: {str(e)}")
@@ -99,7 +99,8 @@ def analyze_batch(payload: BatchPayload):
     results, errors = [], []
     for entry in payload.entries:
         try:
-            raw = process_entry(entry.id, entry.text, entry.lang)
+            # Opção A: A API envia apenas o ID e o texto.
+            raw = process_entry(entry.id, entry.text)
             results.append(remap_output(raw))
         except Exception as e:
             errors.append({"id": entry.id, "error": str(e)})

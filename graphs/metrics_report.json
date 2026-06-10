@@ -1,0 +1,326 @@
+{
+  "AUTHOR": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.6538,
+    "eigenvector": 0.0162
+  },
+  "TRANS WOMEN": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "ELDER LADY": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "RACE": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "BROADS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "AMERICA": {
+    "type": "Location",
+    "in_degree": 2,
+    "betweenness": 0.0,
+    "eigenvector": 0.0307
+  },
+  "TARGET": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "ILLEGALS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "FREWAY": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "REDNECK": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "WHORE": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "YOUNG WOMEN": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "AMERICANS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "YOUNG FIGHTING AGE MEN": {
+    "type": "Group",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0162
+  },
+  "REFUGEES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0007,
+    "eigenvector": 0.0301
+  },
+  "ECONOMIC MIGRANTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0418
+  },
+  "LOCKTHEMUP": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "BUILDTHEWALL": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "ENDDACA": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "BOYCOTTNFL": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "BOYCOTTNIKE": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "ORBAN": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0007,
+    "eigenvector": 0.0162
+  },
+  "EUROPEAN LEADERS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0231
+  },
+  "MIGRANTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0231
+  },
+  "STATES": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0305,
+    "eigenvector": 0.0166
+  },
+  "IMMIGRANTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0303
+  },
+  "BUILDTHATWALL": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "ANTIFA": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "JUVENILEDELINQUENTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "EX-TEACHER": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "DFID": {
+    "type": "Institution",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0162
+  },
+  "AFRICA": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0301
+  },
+  "CLASS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "BENGALI": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "SYLHETI": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "LONDON": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "NEGROS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "MULHERES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "GAYS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "PESSOAS TRANS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "INDÍGENAS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "JUDEUS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "DEFICIENTES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "CHOF": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "HÔTEL": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "AYAA": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0162
+  },
+  "FEBREAU": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0301
+  },
+  "GOTY": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "AMEÉRIQUE DU SUD": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "ASIE": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "AFRIQUE": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "SCREENS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "KHEYETTE": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  },
+  "GOVERNEMENT": {
+    "type": "Institution",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0166
+  }
+}
