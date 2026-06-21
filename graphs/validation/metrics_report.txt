@@ -1,0 +1,14 @@
+====================================================
+       RELATÓRIO DE MÉTRICAS - PIPELINE HÍBRIDO     
+====================================================
+Accuracy  (Exatidão) : 0.8800 (88.0%)
+Precision (Precisão) : 0.9091 (90.9%)
+Recall    (Sensibilidade): 0.9091 (90.9%)
+F1-Score             : 0.9091 (90.9%)
+====================================================
+Matriz de Confusão:
+Verdadeiros Positivos (TP) : 60
+Falsos Positivos      (FP) : 6
+Verdadeiros Negativos (TN) : 28
+Falsos Negativos      (FN) : 6
+====================================================

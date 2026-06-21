@@ -22,9 +22,7 @@ try:
 except ImportError:
     _HAS_EMOJI = False
 
-# ─────────────────────────────────────────────
-# Configuration & Paths
-# ─────────────────────────────────────────────
+# --- Configuration & Paths ---
 JSON_FILE = "results/extraction_results.json"
 LOG_FILE  = "logs/detection_and_api_log.txt"
 DATA_FILE = "data/examples.txt"
@@ -32,9 +30,7 @@ DATA_FILE = "data/examples.txt"
 os.makedirs("logs", exist_ok=True)
 os.makedirs("results", exist_ok=True)
 
-# ─────────────────────────────────────────────
-# Logging Setup
-# ─────────────────────────────────────────────
+# --- Logging Setup ---
 _formatter = logging.Formatter(
     "[%(levelname)s] %(asctime)s — %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
 )
@@ -48,9 +44,7 @@ _console_handler.setFormatter(_formatter)
 logging.basicConfig(level=logging.INFO, handlers=[_console_handler, _file_handler])
 logger = logging.getLogger(__name__)
 
-# ─────────────────────────────────────────────
-# API Client & Models
-# ─────────────────────────────────────────────
+# --- API Client & Models ---
 load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
 client   = InferenceClient(token=HF_TOKEN)
@@ -64,9 +58,7 @@ MODEL_GROUP_C       = "meta-llama/Meta-Llama-3-8B-Instruct"
 
 GROUP_C_LABELS = {"EXTREMIST", "RADICALISM", "VIOLATED", "THREAT"}
 
-# ─────────────────────────────────────────────
-# Thresholds & Limits
-# ─────────────────────────────────────────────
+# --- Thresholds & Limits ---
 THRESHOLD_B = 0.75   
 THRESHOLD_A = 0.60   
 THRESHOLD_C = 0.85   
@@ -89,9 +81,7 @@ PT_SLANG = {
     "k": "que", "d": "de", "aki": "aquí", "xfa": "por favor",
 }
 
-# ─────────────────────────────────────────────
-# Text Normalisation
-# ─────────────────────────────────────────────
+# --- Text Normalisation ---
 def normalize_text(text: str, lang: str = "pt") -> str:
     if _HAS_EMOJI:
         try:
@@ -105,7 +95,6 @@ def normalize_text(text: str, lang: str = "pt") -> str:
     text = re.sub(r"@\w+", "@user", text)
     text = re.sub(r"#(\w+)", r"\1", text)
 
-    # Expand abbreviations only for supported languages
     if lang in ["pt", "es"]:
         for abbr, full in PT_SLANG.items():
             text = re.sub(rf"\b{re.escape(abbr)}\b", full, text, flags=re.IGNORECASE)
@@ -128,9 +117,7 @@ def detect_language(text: str, default: str = "pt") -> str:
     except Exception:
         return default
 
-# ─────────────────────────────────────────────
-# Prompts
-# ─────────────────────────────────────────────
+# --- Prompts ---
 STAGE_1_PROMPT = """
 You are an expert Intelligence Analyst specialized in Social Network Analysis (SNA).
 The text you will receive is written in [LANG]. Interpret it accordingly.
@@ -144,15 +131,23 @@ ENTITY RULES:
    - "Location": Physical or geopolitical places.
 
 2. ID EXTRACTION & NORMALIZATION (STRICT):
-   - EXACT MATCH: Use the exact words found in the text for the entity ID. DO NOT group, categorize, or translate terms. That is the user's job, not yours.
-   - UPPERCASE: Convert all extracted IDs to UPPERCASE to maintain uniformity (e.g., "InternalCase" must become "INTERNALCASE").
-   - NO PRONOUNS/FRAGMENTS: Do NOT extract pronouns (he, she, they, ils, nous) or vague/generic nouns ("guy", "someone", "mec", "oiseau"). If the entity is not a concrete noun phrase, ignore it.
+   - UPPERCASE: Convert all extracted IDs to UPPERCASE to maintain uniformity.
+   - NO PRONOUNS/FRAGMENTS: Do NOT extract pronouns (he, she, they, ils, nous) or vague/generic nouns ("guy", "someone", "everyone", "nobody", "people").
 
-3. THE "AUTHOR" & "TARGET" EXCEPTION:
+3. SEMANTIC CLUSTERING (AUTOMATIC UNIFICATION):
+   - You MUST normalize variations of the same concept into a single, broad English entity ID.
+   - Examples: Map "migrants", "refugees", "illegals", "syrian immigrants" ALL to "IMMIGRANTS". 
+   - Map "US", "USA", "States" ALL to "UNITED STATES".
+   - Map "Taxpayer" to "TAXPAYERS". 
+   - Always translate the final entity ID to English (e.g., "policia" -> "POLICE").
+
+4. IGNORE HASHTAGS & SLOGANS:
+   - NEVER extract political slogans, actions, or hashtags as entities. 
+   - Ignore phrases like "BuildTheWall", "LockThemUp", "BoycottNike", "NoAmnesty". These are NOT entities.
+
+5. THE "AUTHOR" & "TARGET" EXCEPTION:
    - If the text uses first-person pronouns (I, me, eu, je) to express an action, map it to the exact ID: "AUTHOR".
    - If the text uses second-person pronouns (you, tu, vc, vous) as the recipient of an action, map it to the exact ID: "TARGET".
-   - NEVER use variations like "Author", "author", or "Target". They MUST be uppercase.
-   - NEVER create "AUTHOR" or "TARGET" if a real named entity covers the role.
 
 RELATIONSHIP RULES:
 - Extract relationships ONLY between two valid extracted entities.
@@ -207,12 +202,6 @@ CLASSIFICATION BOUNDARIES — read carefully before deciding:
 - Expressing an opinion others disagree with → NOT radicalism unless it calls to systematically harm an entire group.
 - Sarcasm, frustration, venting → NOT severe.
 
-FEW-SHOT EXAMPLES:
-Text: "tu novio es medio pedofilo" → null (insult towards an individual, not radicalism)
-Text: "I would not say anything to the police" → null (refusal to interact, not severe)
-Text: "We should cleanse all [ethnic group] from our country" → RADICALISM
-Text: "I will burn your house down tonight" → THREAT
-
 If none of the severe categories clearly applies, set taxonomy_classification to null
 and confidence to 0.0. When in doubt, choose null.
 
@@ -220,9 +209,7 @@ OUTPUT ONLY VALID JSON. Keep the confidence_reasoning extremely short (MAXIMUM 8
 {{"taxonomy_classification": "LABEL or null", "confidence_reasoning": "short reason here", "confidence": 0.0}}
 """
 
-# ─────────────────────────────────────────────
-# Low-level API Helpers
-# ─────────────────────────────────────────────
+# --- Low-level API Helpers ---
 def safe_json_load(content):
     content_str = str(content).strip()
     
@@ -273,9 +260,7 @@ def call_complet(model: str, messages: list, max_tokens: int = 150, temperature:
     )
     return response.choices[0].message.content
 
-# ─────────────────────────────────────────────
-# Classification Tiers
-# ─────────────────────────────────────────────
+# --- Classification Tiers ---
 def _tier1_group_b(text: str):
     res = retry_call(lambda: call_classif(text, MODEL_GROUP_B))
     if res.label != "hate" or res.score < THRESHOLD_B:
@@ -371,34 +356,83 @@ def classify_relation(text: str, rel: dict, lang: str = "pt") -> dict:
             "confidence_score": 0.0,
         }
 
-# ─────────────────────────────────────────────
-# Graph Cleaning Guardrail
-# ─────────────────────────────────────────────
-def clean_extracted_graph(graph: dict) -> dict:
-    # Failsafe filter to ensure strict compliance with SNA rules
+# --- Graph Cleaning Guardrail & Normalization ---
+
+# Static Mapping to ensure central metrics are structurally sound
+ENTITY_NORMALIZATION_MAP = {
+    "DAD": "FATHER", "MOM": "MOTHER",
+    "PRETOS": "BLACK PEOPLE", "NEGROS": "BLACK PEOPLE",
+    "NIGGAS": "BLACK PEOPLE", "NIGGA": "BLACK PEOPLE",
+    "POLICIA": "POLICE", "GOVERNO": "GOVERNMENT",
+    
+    "TAXPAYER": "TAXPAYERS",
+    "U.S. TAXPAYERS": "TAXPAYERS",
+    "US TAXPAYERS": "TAXPAYERS",
+    
+    "US": "UNITED STATES",
+    "U.S.": "UNITED STATES",
+    "USA": "UNITED STATES",
+    "STATES": "UNITED STATES",
+    
+    "MIGRANTS": "IMMIGRANTS",
+    "MIGRANT": "IMMIGRANTS",
+    "IMMIGRANT": "IMMIGRANTS",
+    "IMMIGRANT FAMILIES": "IMMIGRANTS",
+    "ECONOMIC MIGRANTS": "IMMIGRANTS",
+    "LATIN MIGRANTS": "IMMIGRANTS",
+    "AFRICAN MIGRANTS": "IMMIGRANTS",
+    "MUSLIM MIGRANTS": "IMMIGRANTS",
+    "REFUGEES": "IMMIGRANTS",
+    "SYRIAN IMMIGRANTS": "IMMIGRANTS",
+    "ILLEGALS": "IMMIGRANTS",
+    "REFUGIADOS": "IMMIGRANTS",
+    "IMIGRANTES ILEGAIS": "IMMIGRANTS",
+    "AFRICAN IMMIGRANTS": "IMMIGRANTS",
+    "ARAB IMMIGRANTS": "IMMIGRANTS",
+    "SYRIAN REFUGEE": "IMMIGRANTS",
+    "CRIMINAL REFUGEES": "IMMIGRANTS",
+    "LEGAL IMMIGRANT": "IMMIGRANTS",
+    "ILLEGAL ALIEN": "IMMIGRANTS",
+    "IMMIGRANT KIDS": "IMMIGRANTS",
+    "IMMIGRATION INVASION": "IMMIGRANTS"
+}
+
+IGNORED_ENTITIES = {
+    "EVERYONE", "TODOS", "SOMEONE", "ALGUÉM", "NOBODY", "NINGUÉM", 
+    "ANYONE", "QUALQUER UM", "THEY", "ELES", "PEOPLE", "PESSOAS"
+}
+
+def clean_extracted_graph(graph: dict, entry_id: int) -> dict:
+    """
+    Cleans extracted graph, applies dictionary normalization, 
+    and dynamically isolates vague targets with row ID to prevent massive hubs.
+    """
     if not graph:
         return graph
         
-    author_aliases = {"EU", "YO", "I", "ME", "MIM", "NÓS", "NOS", "JE", "MOI", "NOUS"}
-    target_aliases = {"TU", "VOCÊ", "VC", "YOU", "VOUS", "TOI", "THEM", "HE", "SHE", "HIM", "HER"}
+    author_aliases = {"EU", "YO", "I", "ME", "MIM", "NÓS", "NOS", "JE", "MOI", "NOUS", "AUTHOR"}
+    target_aliases = {"TU", "VOCÊ", "VC", "YOU", "VOUS", "TOI", "THEM", "HE", "SHE", "HIM", "HER", "TARGET"}
     valid_types    = {"Person", "Group", "Institution", "Location"}
     
     valid_entity_ids = set()
     cleaned_entities = []
     
-    # 1. Clean Entities
     for ent in graph.get("entities", []):
         ent_id   = str(ent.get("id", "")).strip().upper()
         ent_type = str(ent.get("type", "")).strip()
         
-        if not ent_id:
+        if not ent_id or ent_id in IGNORED_ENTITIES:
             continue
             
+        if ent_id in ENTITY_NORMALIZATION_MAP:
+            ent_id = ENTITY_NORMALIZATION_MAP[ent_id]
+            
+        # Bind undefined users to current entry id
         if ent_id in author_aliases:
-            ent_id   = "AUTHOR"
+            ent_id   = f"AUTHOR_{entry_id}"
             ent_type = "Person"
         elif ent_id in target_aliases:
-            ent_id   = "TARGET"
+            ent_id   = f"TARGET_{entry_id}"
             ent_type = "Person"
             
         if ent_type not in valid_types:
@@ -407,29 +441,29 @@ def clean_extracted_graph(graph: dict) -> dict:
         ent["id"]   = ent_id
         ent["type"] = ent_type
         
-        # Prevent duplicate nodes 
         if ent_id not in valid_entity_ids:
             cleaned_entities.append(ent)
             valid_entity_ids.add(ent_id)
             
     graph["entities"] = cleaned_entities
     
-    # 2. Clean Relationships
     cleaned_relationships = []
     for rel in graph.get("relationships", []):
         src = str(rel.get("source", "")).strip().upper()
         tgt = str(rel.get("target", "")).strip().upper()
         
-        if src in author_aliases: src = "AUTHOR"
-        elif src in target_aliases: src = "TARGET"
+        if src in ENTITY_NORMALIZATION_MAP: src = ENTITY_NORMALIZATION_MAP[src]
+        if tgt in ENTITY_NORMALIZATION_MAP: tgt = ENTITY_NORMALIZATION_MAP[tgt]
         
-        if tgt in author_aliases: tgt = "AUTHOR"
-        elif tgt in target_aliases: tgt = "TARGET"
+        if src in author_aliases: src = f"AUTHOR_{entry_id}"
+        elif src in target_aliases: src = f"TARGET_{entry_id}"
+        
+        if tgt in author_aliases: tgt = f"AUTHOR_{entry_id}"
+        elif tgt in target_aliases: tgt = f"TARGET_{entry_id}"
         
         rel["source"] = src
         rel["target"] = tgt
         
-        # Only accept relations where both nodes exist in the cleaned entity list
         if src in valid_entity_ids and tgt in valid_entity_ids and src != tgt:
             cleaned_relationships.append(rel)
             
@@ -437,9 +471,7 @@ def clean_extracted_graph(graph: dict) -> dict:
     
     return graph
 
-# ─────────────────────────────────────────────
-# Entry Processor
-# ─────────────────────────────────────────────
+# --- Entry Processor ---
 def process_entry(idx: int, raw_text: str) -> dict:
     lang = detect_language(raw_text)
     logger.info(f"[{idx}] Detected language: {lang!r}")
@@ -464,30 +496,33 @@ def process_entry(idx: int, raw_text: str) -> dict:
         return {"id": idx, "original_text": raw_text, "normalised_text": text, "analysis": {}}
 
     graph = safe_json_load(s1_res)
-    graph = clean_extracted_graph(graph)
+    graph = clean_extracted_graph(graph, idx)
     
     logger.info(
         f"[{idx}] Graph: {len(graph.get('entities', []))} entities, "
         f"{len(graph.get('relationships', []))} relationships"
     )
 
-    # Fallback applied if API truncates the JSON or returns an empty graph
     if not graph or not graph.get("relationships"):
         logger.warning(f"[{idx}] Empty graph — applying direct text classification")
+        
+        fallback_author = f"AUTHOR_{idx}"
+        fallback_target = f"TARGET_{idx}"
+        
         fallback = classify_relation(
             text,
-            {"source": "AUTHOR", "target": "TARGET", "interaction_type": "interacts"},
+            {"source": fallback_author, "target": fallback_target, "interaction_type": "interacts"},
             lang=lang,
         )
         graph = {
             "entities": [
-                {"id": "AUTHOR", "type": "Person"},
-                {"id": "TARGET", "type": "Person"},
+                {"id": fallback_author, "type": "Person"},
+                {"id": fallback_target, "type": "Person"},
             ],
             "relationships": [
                 {
-                    "source": "AUTHOR",
-                    "target": "TARGET",
+                    "source": fallback_author,
+                    "target": fallback_target,
                     "interaction_type": "interacts",
                     **fallback,
                 }
@@ -517,9 +552,7 @@ def process_entry(idx: int, raw_text: str) -> dict:
 
     return {"id": idx, "original_text": raw_text, "normalised_text": text, "analysis": graph}
 
-# ─────────────────────────────────────────────
-# Batch Runner
-# ─────────────────────────────────────────────
+# --- Batch Runner ---
 def run_batch_test():
     logger.info("--- Run started ---")
     try:

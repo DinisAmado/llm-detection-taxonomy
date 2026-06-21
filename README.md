@@ -18,6 +18,7 @@ This project is a **Social Network Analysis (SNA)** tool powered by LLMs and NLP
 - **Decision Support Dashboard:** Streamlit app with critical alerts, network influencer rankings, and an embedded interactive knowledge graph.
 - **Automatic Ingestion:** Script to import Hugging Face datasets (EN, ES, PT, FR) directly into the system.
 - **Dual Persistence:** Results saved to JSON files for quick lookup and to a SQLite database for structured analysis.
+- **Validation & Ablation Study:** Standalone script that generates a confusion matrix, class distribution chart, and comparative ROC curve (hybrid pipeline vs. keyword baseline), plus a full metrics report (Accuracy, Precision, Recall, F1-Score).
 
 ---
 
@@ -31,7 +32,8 @@ sna-analysis/
 │   ├── ingest.py      # Batch ingestion from Hugging Face datasets into SQLite
 │   ├── kg.py          # Knowledge graph builder: HTML + PNG exports, subgraphs, CLI
 │   ├── analytics.py   # Graph metrics: centrality, PageRank, community detection
-│   └── app.py         # Streamlit decision support dashboard
+│   ├── app.py         # Streamlit decision support dashboard
+│   └── validate.py    # Validation script: confusion matrix, ROC curve, metrics report
 ├── data/
 │   └── examples.txt   # One sentence per line — input for local batch processing
 ├── results/
@@ -40,7 +42,12 @@ sna-analysis/
 ├── graphs/
 │   ├── knowledge_graph.html
 │   ├── knowledge_graph.png
-│   └── metrics_report.json
+│   ├── metrics_report.json
+│   └── validation/
+│       ├── confusion_matrix.png
+│       ├── class_distribution.png
+│       ├── roc_curve_comparison.png
+│       └── metrics_report.txt
 ├── logs/
 └── .env
 ```
@@ -160,6 +167,25 @@ streamlit run src/app.py
 ```
 
 > Requires the database (`results/sna.db`) and graph files (`graphs/`) to exist. Run `ingest.py` and `kg.py` first.
+
+### 6. Run the Validation & Ablation Study
+
+After ingestion and graph generation, run the validation script to evaluate the pipeline's classification performance:
+
+```bash
+python src/validate.py
+```
+
+This generates four outputs inside `graphs/validation/`:
+
+| Output | Description |
+|---|---|
+| `confusion_matrix.png` | Confusion matrix of the hybrid pipeline (TP, FP, TN, FN). |
+| `class_distribution.png` | Bar chart showing the 2:1 class imbalance (Severe vs. No Risk). |
+| `roc_curve_comparison.png` | Comparative ROC curves: hybrid pipeline vs. keyword-based baseline. |
+| `metrics_report.txt` | Text report with Accuracy, Precision, Recall, and F1-Score. |
+
+The script uses a fixed random seed (`numpy.random.seed(42)`) to ensure reproducibility of the simulated ground truth.
 
 ---
 

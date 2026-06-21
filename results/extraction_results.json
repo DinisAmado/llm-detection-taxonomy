@@ -6,7 +6,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_1",
           "type": "Person"
         },
         {
@@ -24,7 +24,7 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_1",
           "target": "SUPER",
           "interaction_type": "visits",
           "taxonomy_classification": "EMOTIONAL",
@@ -32,7 +32,7 @@
           "confidence_score": 70.16
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_1",
           "target": "CUARTO",
           "interaction_type": "cleans",
           "taxonomy_classification": "EMOTIONAL",
@@ -40,7 +40,7 @@
           "confidence_score": 70.16
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_1",
           "target": "SERIE",
           "interaction_type": "watches",
           "taxonomy_classification": "EMOTIONAL",
@@ -63,13 +63,25 @@
         {
           "id": "ESPOSA",
           "type": "Person"
+        },
+        {
+          "id": "AUTHOR_2",
+          "type": "Person"
         }
       ],
       "relationships": [
         {
           "source": "COMPANERO DE TRABAJO",
           "target": "ESPOSA",
-          "interaction_type": "shows affection toward",
+          "interaction_type": "gave a gift to",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "AUTHOR_2",
+          "target": "COMPANERO DE TRABAJO",
+          "interaction_type": "showed emotion towards",
           "taxonomy_classification": "NEUTRAL",
           "confidence_reasoning": "No tier reached sufficient confidence for classification.",
           "confidence_score": 0.0
@@ -84,36 +96,25 @@
     "analysis": {
       "entities": [
         {
-          "id": "EVERYONE",
-          "type": "Group"
+          "id": "AUTHOR_3",
+          "type": "Person"
         },
         {
-          "id": "INTROVERTS",
-          "type": "Group"
-        },
-        {
-          "id": "EXTROVERTS",
-          "type": "Group"
+          "id": "TARGET_3",
+          "type": "Person"
         }
       ],
       "relationships": [
         {
-          "source": "EVERYONE",
-          "target": "INTROVERTS",
-          "interaction_type": "forces to leave their comfort zone",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        },
-        {
-          "source": "EVERYONE",
-          "target": "EXTROVERTS",
-          "interaction_type": "forces to shut up for a while",
+          "source": "AUTHOR_3",
+          "target": "TARGET_3",
+          "interaction_type": "interacts",
           "taxonomy_classification": "NEUTRAL",
           "confidence_reasoning": "No tier reached sufficient confidence for classification.",
           "confidence_score": 0.0
         }
-      ]
+      ],
+      "_extraction_note": "KG extraction failed — direct classification applied"
     }
   },
   {
@@ -123,7 +124,11 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_4",
+          "type": "Person"
+        },
+        {
+          "id": "TARGET_4",
           "type": "Person"
         },
         {
@@ -133,9 +138,17 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
-          "target": "GIRLS",
+          "source": "AUTHOR_4",
+          "target": "TARGET_4",
           "interaction_type": "advises",
+          "taxonomy_classification": "SENTIMENTAL",
+          "confidence_reasoning": "Tier 2 detected 'positive' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.66).",
+          "confidence_score": 65.54
+        },
+        {
+          "source": "AUTHOR_4",
+          "target": "GIRLS",
+          "interaction_type": "cautions",
           "taxonomy_classification": "SENTIMENTAL",
           "confidence_reasoning": "Tier 2 detected 'positive' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.66).",
           "confidence_score": 65.54
@@ -150,7 +163,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_5",
           "type": "Person"
         },
         {
@@ -168,25 +181,25 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
-          "target": "BRAZILIAN SUPREME COURT",
-          "interaction_type": "was taken to",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.63).",
-          "confidence_score": 62.62
-        },
-        {
-          "source": "AUTHOR",
+          "source": "AUTHOR_5",
           "target": "WOMAN",
-          "interaction_type": "made a statement about",
+          "interaction_type": "makes a statement about",
           "taxonomy_classification": "EMOTIONAL",
           "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.63).",
           "confidence_score": 62.62
         },
         {
-          "source": "AUTHOR",
-          "target": "COUNTRY",
-          "interaction_type": "made a statement about",
+          "source": "BRAZILIAN SUPREME COURT",
+          "target": "AUTHOR_5",
+          "interaction_type": "persecutes",
+          "taxonomy_classification": "EMOTIONAL",
+          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.63).",
+          "confidence_score": 62.62
+        },
+        {
+          "source": "AUTHOR_5",
+          "target": "BRAZILIAN SUPREME COURT",
+          "interaction_type": "wins against",
           "taxonomy_classification": "EMOTIONAL",
           "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.63).",
           "confidence_score": 62.62
@@ -205,7 +218,7 @@
           "type": "Group"
         },
         {
-          "id": "SIBLINGS",
+          "id": "CHILDREN",
           "type": "Group"
         },
         {
@@ -215,9 +228,17 @@
       ],
       "relationships": [
         {
-          "source": "PARENTS",
-          "target": "SIBLINGS",
-          "interaction_type": "raises",
+          "source": "CHILDREN",
+          "target": "HOUSE",
+          "interaction_type": "grow up in",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "CHILDREN",
+          "target": "PARENTS",
+          "interaction_type": "have",
           "taxonomy_classification": "NEUTRAL",
           "confidence_reasoning": "No tier reached sufficient confidence for classification.",
           "confidence_score": 0.0
@@ -250,20 +271,20 @@
         {
           "id": "BONECO",
           "type": "Group"
+        },
+        {
+          "id": "FILME",
+          "type": "Group"
+        },
+        {
+          "id": "REGIÃO",
+          "type": "Location"
         }
       ],
       "relationships": [
         {
           "source": "MINHA FILHA",
           "target": "AUTISTA",
-          "interaction_type": "identifies as",
-          "taxonomy_classification": "NEUTRAL",
-          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
-          "confidence_score": 0.0
-        },
-        {
-          "source": "MINHA FILHA",
-          "target": "ELA",
           "interaction_type": "is",
           "taxonomy_classification": "NEUTRAL",
           "confidence_reasoning": "No tier reached sufficient confidence for classification.",
@@ -278,9 +299,26 @@
           "confidence_score": 0.0
         },
         {
-          "source": "ELA",
+          "source": "MINHA FILHA",
           "target": "BONECO",
           "interaction_type": "reacted to",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "MINHA FILHA",
+          "target": "FILME",
+          "interaction_type": "watched",
+          "taxonomy_classification": "NEUTRAL",
+          "confidence_reasoning": "No tier reached sufficient confidence for classification.",
+          "confidence_score": 0.0
+        },
+        {
+          "source": "MINHA FILHA",
+          "type": "AUTHOR",
+          "target": "REGIÃO",
+          "interaction_type": "experienced",
           "taxonomy_classification": "NEUTRAL",
           "confidence_reasoning": "No tier reached sufficient confidence for classification.",
           "confidence_score": 0.0
@@ -295,7 +333,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_8",
           "type": "Person"
         },
         {
@@ -313,7 +351,7 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_8",
           "target": "MANO",
           "interaction_type": "speaks to",
           "taxonomy_classification": "SENTIMENTAL",
@@ -321,7 +359,7 @@
           "confidence_score": 84.97
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_8",
           "target": "ESTE FILME",
           "interaction_type": "expresses enthusiasm for",
           "taxonomy_classification": "SENTIMENTAL",
@@ -329,9 +367,9 @@
           "confidence_score": 84.97
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_8",
           "target": "ESTE ESTILO",
-          "interaction_type": "admires",
+          "interaction_type": "expresses admiration for",
           "taxonomy_classification": "SENTIMENTAL",
           "confidence_reasoning": "Tier 2 detected 'positive' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.85).",
           "confidence_score": 84.97
@@ -346,7 +384,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_9",
           "type": "Person"
         },
         {
@@ -360,7 +398,7 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_9",
           "target": "TRABAJADORES",
           "interaction_type": "criticizes",
           "taxonomy_classification": "EMOTIONAL",
@@ -368,7 +406,7 @@
           "confidence_score": 72.26
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_9",
           "target": "CIUDAD",
           "interaction_type": "describes negatively",
           "taxonomy_classification": "EMOTIONAL",
@@ -397,34 +435,34 @@
           "type": "Person"
         },
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_10",
           "type": "Person"
         }
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_10",
           "target": "TU NOVIO",
           "interaction_type": "criticizes",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.67).",
-          "confidence_score": 66.75
+          "taxonomy_classification": "RADICALISM",
+          "confidence_reasoning": "systematic dehumanization",
+          "confidence_score": 100.0
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_10",
           "target": "PEDÓFILO",
           "interaction_type": "accuses",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.67).",
-          "confidence_score": 66.75
+          "taxonomy_classification": "EXTREMIST",
+          "confidence_reasoning": "calls for mass violence",
+          "confidence_score": 100.0
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_10",
           "target": "UNA DE 11",
           "interaction_type": "mentions",
-          "taxonomy_classification": "EMOTIONAL",
-          "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.67).",
-          "confidence_score": 66.75
+          "taxonomy_classification": "RADICALISM",
+          "confidence_reasoning": "dehumanizing language",
+          "confidence_score": 100.0
         }
       ]
     }
@@ -440,18 +478,18 @@
           "type": "Institution"
         },
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_11",
           "type": "Person"
         },
         {
-          "id": "TARGET",
+          "id": "TARGET_11",
           "type": "Person"
         }
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
-          "target": "TARGET",
+          "source": "AUTHOR_11",
+          "target": "TARGET_11",
           "interaction_type": "expresses frustration with",
           "taxonomy_classification": "EMOTIONAL",
           "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: distilbert-base-multilingual-cased-sentiments-student, score: 0.95).",
@@ -467,7 +505,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_12",
           "type": "Person"
         },
         {
@@ -481,7 +519,7 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_12",
           "target": "MEN",
           "interaction_type": "believes",
           "taxonomy_classification": "EMOTIONAL",
@@ -489,7 +527,7 @@
           "confidence_score": 83.95
         },
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_12",
           "target": "WOMEN",
           "interaction_type": "believes",
           "taxonomy_classification": "EMOTIONAL",
@@ -506,7 +544,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_13",
           "type": "Person"
         },
         {
@@ -516,7 +554,7 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_13",
           "target": "CHARLIE",
           "interaction_type": "expresses anger toward",
           "taxonomy_classification": "HATE",
@@ -533,7 +571,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_14",
           "type": "Person"
         },
         {
@@ -547,11 +585,11 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_14",
           "target": "POLICE",
           "interaction_type": "refuses to report to",
           "taxonomy_classification": "THREAT",
-          "confidence_reasoning": "Explicit threat of arson",
+          "confidence_reasoning": "Explicit threat of violence",
           "confidence_score": 100.0
         }
       ]
@@ -564,7 +602,7 @@
     "analysis": {
       "entities": [
         {
-          "id": "AUTHOR",
+          "id": "AUTHOR_15",
           "type": "Person"
         },
         {
@@ -574,9 +612,9 @@
       ],
       "relationships": [
         {
-          "source": "AUTHOR",
+          "source": "AUTHOR_15",
           "target": "SOCIETY",
-          "interaction_type": "blames",
+          "interaction_type": "accuses",
           "taxonomy_classification": "EMOTIONAL",
           "confidence_reasoning": "Tier 2 detected 'negative' sentiment (model: twitter-roberta-base-sentiment-latest, score: 0.93).",
           "confidence_score": 93.0

@@ -12,7 +12,7 @@ from datasets import load_dataset
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-# ── Config ───────────────────────────────────────────────────────────────────
+# --- Config ---
 API_URL  = "http://127.0.0.1:8000/analyze"
 DB_PATH  = "results/sna.db"
 LOG_PATH = "logs/ingest.log"
@@ -21,10 +21,10 @@ DATASET_CONFIG = {
     "EN": ("ucberkeley-dlab/measuring-hate-speech", "default", "train", "text"),
     "ES": ("valeriobasile/HatEval",                 "default", "train", "text"),
     "PT": ("Paul/hatecheck-portuguese",             "default", "test", "test_case"),
-    "FR": ("AxelDlv00/ToxiFrench",                    "default", "train", "content"), 
+    "FR": ("AxelDlv00/ToxiFrench",                  "default", "train", "content"), 
 }
 
-# ── Logging ──────────────────────────────────────────────────────────────────
+# --- Logging ---
 Path("logs").mkdir(exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
@@ -42,8 +42,9 @@ load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
 login(token=HF_TOKEN)
 
-# ── SQLite setup ─────────────────────────────────────────────────────────────
+# --- SQLite Setup ---
 def init_db(db_path: str) -> sqlite3.Connection:
+    """Initializes the database schema for the SNA framework."""
     Path(db_path).parent.mkdir(exist_ok=True)
     conn = sqlite3.connect(db_path, check_same_thread=False)
     conn.execute("PRAGMA journal_mode=WAL")
@@ -84,8 +85,8 @@ def init_db(db_path: str) -> sqlite3.Connection:
     conn.commit()
     return conn
 
-
 def save_result(conn: sqlite3.Connection, lang: str, api_response: dict):
+    """Saves API processing output to SQLite storage."""
     original_text     = api_response.get("original_text", "")
     taxonomy_category = api_response.get("taxonomy_category", "NEUTRAL")
     entities          = api_response.get("extracted_entities", [])
@@ -121,10 +122,10 @@ def save_result(conn: sqlite3.Connection, lang: str, api_response: dict):
     )
     conn.commit()
 
-# ── API call ─────────────────────────────────────────────────────────────────
-def call_api(text: str, retries: int = 3) -> dict | None:
-    """Sends text to the FastAPI endpoint. Language detection is handled server-side."""
-    payload = {"text": text}
+# --- API Integration ---
+def call_api(entry_id: int, text: str, retries: int = 3) -> dict | None:
+    """Sends text payload + ID to the FastAPI endpoint."""
+    payload = {"id": entry_id, "text": text}
     
     for attempt in range(retries):
         try:
@@ -139,8 +140,9 @@ def call_api(text: str, retries: int = 3) -> dict | None:
     logger.error(f"All retries exhausted for text: {text[:60]!r}")
     return None
 
-# ── Dataset loader ────────────────────────────────────────────────────────────
+# --- Dataset Loader ---
 def load_texts(lang: str, limit: int) -> list[str]:
+    """Pulls specified limit of rows from HuggingFace dataset."""
     if lang not in DATASET_CONFIG:
         raise ValueError(f"Unsupported lang: {lang}. Choose from {list(DATASET_CONFIG)}")
 
@@ -158,7 +160,7 @@ def load_texts(lang: str, limit: int) -> list[str]:
     logger.info(f"Loaded {len(texts)} texts")
     return texts
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+# --- Main Ingestion Logic ---
 def run_ingestion(lang: str, limit: int, workers: int):
     logger.info(f"=== Ingestion started — lang={lang}, limit={limit}, workers={workers} ===")
 
@@ -170,7 +172,7 @@ def run_ingestion(lang: str, limit: int, workers: int):
 
     def process(idx_text):
         idx, text = idx_text
-        result = call_api(text)
+        result = call_api(idx, text)
         return idx, text, result
 
     with ThreadPoolExecutor(max_workers=workers) as executor:

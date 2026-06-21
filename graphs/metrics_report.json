@@ -1,326 +1,1256 @@
 {
-  "AUTHOR": {
+  "AUTHOR_1": {
     "type": "Person",
     "in_degree": 0,
-    "betweenness": 0.6538,
-    "eigenvector": 0.0162
-  },
-  "TRANS WOMEN": {
-    "type": "Group",
-    "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "ELDER LADY": {
-    "type": "Person",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0034
   },
   "RACE": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
   },
-  "BROADS": {
+  "AUTHOR_3": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0015,
+    "eigenvector": 0.0034
+  },
+  "AMERICANS": {
     "type": "Group",
+    "in_degree": 3,
+    "betweenness": 0.0013,
+    "eigenvector": 0.0093
+  },
+  "TARGET_3": {
+    "type": "Person",
     "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "betweenness": 0.0016,
+    "eigenvector": 0.0049
   },
   "AMERICA": {
     "type": "Location",
-    "in_degree": 2,
-    "betweenness": 0.0,
-    "eigenvector": 0.0307
+    "in_degree": 3,
+    "betweenness": 0.0021,
+    "eigenvector": 0.0095
   },
-  "TARGET": {
+  "AUTHOR_2": {
     "type": "Person",
-    "in_degree": 1,
+    "in_degree": 0,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0034
   },
-  "ILLEGALS": {
+  "TRANS WOMEN": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
   },
-  "FREWAY": {
-    "type": "Location",
+  "AUTHOR_4": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "IMMIGRANTS": {
+    "type": "Group",
+    "in_degree": 4,
+    "betweenness": 0.0017,
+    "eigenvector": 0.0137
+  },
+  "AUTHOR_5": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_5": {
+    "type": "Person",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_6": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "BLACK LESBIANS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_7": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
   },
   "REDNECK": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
   },
-  "WHORE": {
+  "AUTHOR_8": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_8": {
     "type": "Person",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
   },
-  "YOUNG WOMEN": {
+  "AUTHOR_10": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_10": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_11": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "LGBT": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
   },
-  "AMERICANS": {
-    "type": "Group",
-    "in_degree": 1,
+  "AUTHOR_12": {
+    "type": "Person",
+    "in_degree": 0,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0034
   },
-  "YOUNG FIGHTING AGE MEN": {
+  "AUTHOR_9": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "WOMEN": {
+    "type": "Group",
+    "in_degree": 5,
+    "betweenness": 0.0005,
+    "eigenvector": 0.018
+  },
+  "POLICE": {
     "type": "Group",
     "in_degree": 0,
     "betweenness": 0.0,
-    "eigenvector": 0.0162
+    "eigenvector": 0.0034
   },
-  "REFUGEES": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0007,
-    "eigenvector": 0.0301
-  },
-  "ECONOMIC MIGRANTS": {
+  "HINDUS": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0418
+    "eigenvector": 0.0064
   },
-  "LOCKTHEMUP": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "BUILDTHEWALL": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "ENDDACA": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "BOYCOTTNFL": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "BOYCOTTNIKE": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "ORBAN": {
-    "type": "Person",
-    "in_degree": 0,
-    "betweenness": 0.0007,
-    "eigenvector": 0.0162
-  },
-  "EUROPEAN LEADERS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0231
-  },
-  "MIGRANTS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0231
-  },
-  "STATES": {
-    "type": "Location",
-    "in_degree": 1,
-    "betweenness": 0.0305,
-    "eigenvector": 0.0166
-  },
-  "IMMIGRANTS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0303
-  },
-  "BUILDTHATWALL": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "ANTIFA": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "JUVENILEDELINQUENTS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "EX-TEACHER": {
-    "type": "Person",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "DFID": {
+  "LABOUR": {
     "type": "Institution",
     "in_degree": 0,
     "betweenness": 0.0,
-    "eigenvector": 0.0162
+    "eigenvector": 0.0034
   },
-  "AFRICA": {
+  "AUTHOR_15": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0001,
+    "eigenvector": 0.0034
+  },
+  "WHITE SMALL LITTLE INVISIBLE CLITS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "GODDESSJAYY": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "EBONYDOMME": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "AUTHOR_16": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_16": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_18": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_18": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "AMERICAN": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "AUTHOR_19": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_19": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_17": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_17": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "SOUTH ASIAN": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "JOSHUA LELU": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "SCARLETT": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_22": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR'S FATHER": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0001,
+    "eigenvector": 0.0064
+  },
+  "BLACKS": {
+    "type": "Group",
+    "in_degree": 2,
+    "betweenness": 0.0001,
+    "eigenvector": 0.0118
+  },
+  "AUTHOR_23": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "BLACK PEOPLE": {
+    "type": "Group",
+    "in_degree": 2,
+    "betweenness": 0.0002,
+    "eigenvector": 0.0078
+  },
+  "AUTHOR_25": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR_26": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_26": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_27": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR_28": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR_30": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_30": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_31": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_31": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_32": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_32": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_34": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_34": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_36": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_36": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "FATHER": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0006,
+    "eigenvector": 0.0042
+  },
+  "GIRLS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.007
+  },
+  "WILSON": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_37": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "BULLIES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "AUTHOR_38": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "DWIGHT HOWARD": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "JOE": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TRANSGENDER": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "ROHIT SHARMA": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "PAKISTAN": {
     "type": "Location",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0301
+    "eigenvector": 0.0064
   },
-  "CLASS": {
+  "AUTHOR_42": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_42": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_41": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "CRACKER": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "DEATH PENALTY": {
+    "type": "Institution",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "AUTHOR_43": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_43": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_44": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "BOTTOMS": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0049
   },
-  "BENGALI": {
+  "DUDE": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "JIFE": {
     "type": "Group",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "SAINT DR. GURMEET RAM RAHIM SINGH JI INSAN": {
+    "type": "Person",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
   },
-  "SYLHETI": {
+  "AUTHOR_47": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "WHITE PEOPLE": {
     "type": "Group",
-    "in_degree": 1,
+    "in_degree": 2,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0093
   },
-  "LONDON": {
-    "type": "Location",
-    "in_degree": 1,
+  "AUTHOR_46": {
+    "type": "Person",
+    "in_degree": 0,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "NEGROS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "MULHERES": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0034
   },
   "GAYS": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0049
   },
-  "PESSOAS TRANS": {
+  "NAZI": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0049
   },
-  "INDÍGENAS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "JUDEUS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "DEFICIENTES": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "CHOF": {
+  "AUTHOR_48": {
     "type": "Person",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "in_degree": 0,
+    "betweenness": 0.0019,
+    "eigenvector": 0.0034
   },
-  "HÔTEL": {
-    "type": "Location",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
+  "MUSLIMS": {
+    "type": "Group",
+    "in_degree": 2,
+    "betweenness": 0.0021,
+    "eigenvector": 0.0059
   },
-  "AYAA": {
+  "AUTHOR_49": {
     "type": "Person",
     "in_degree": 0,
     "betweenness": 0.0,
-    "eigenvector": 0.0162
+    "eigenvector": 0.0034
   },
-  "FEBREAU": {
-    "type": "Person",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0301
-  },
-  "GOTY": {
+  "RELIGIOUS PIMPS": {
     "type": "Group",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0064
   },
-  "AMEÉRIQUE DU SUD": {
-    "type": "Location",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
+  "AUTHOR_51": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.001,
+    "eigenvector": 0.0034
   },
-  "ASIE": {
-    "type": "Location",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "AFRIQUE": {
-    "type": "Location",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "SCREENS": {
-    "type": "Group",
-    "in_degree": 1,
-    "betweenness": 0.0,
-    "eigenvector": 0.0166
-  },
-  "KHEYETTE": {
+  "SAUDI": {
     "type": "Person",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0044
   },
-  "GOVERNEMENT": {
+  "IRAN": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "AUTHOR_53": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_53": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_55": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_55": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_56": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "NIGGERS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_52": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0017,
+    "eigenvector": 0.0034
+  },
+  "GODLY PEOPLE": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "RACISTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "DEMAGOGUES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "HOMOPHOBES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "TRANSPHOBES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "SERIAL KILLERS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "BIGOTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "MISOGYNISTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "STRAIGHT WHITE MALES": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0038
+  },
+  "AUTHOR_58": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0001,
+    "eigenvector": 0.0034
+  },
+  "TARGET_58": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "KIDS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "RELIGION": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "AUTHOR_59": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR_61": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_61": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_60": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0005,
+    "eigenvector": 0.0034
+  },
+  "TARGET_60": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "AUTHOR_62": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_62": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_64": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_64": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "BLACK": {
+    "type": "Group",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "ROCKETS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_66": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TRANS PEOPLE": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_67": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_67": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_63": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0004,
+    "eigenvector": 0.0034
+  },
+  "TERRORISTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "UNITED STATES": {
+    "type": "Location",
+    "in_degree": 2,
+    "betweenness": 0.0007,
+    "eigenvector": 0.0056
+  },
+  "AUTHOR_69": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "ISLAM": {
+    "type": "Group",
+    "in_degree": 3,
+    "betweenness": 0.0025,
+    "eigenvector": 0.0081
+  },
+  "AUTHOR_68": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.001,
+    "eigenvector": 0.0034
+  },
+  "BRITS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "TARGET_68": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "AUTHOR_70": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR_72": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_72": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "DELON": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TURKEY": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "INDIAN MUSLIM": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0049
+  },
+  "AUTHOR_74": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "BULL": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_76": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_76": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_77": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "CRIMINAL SCUM": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "COP": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "CULPRIT": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "LOCAL LOSERS": {
+    "type": "Group",
+    "in_degree": 0,
+    "betweenness": 0.0003,
+    "eigenvector": 0.0034
+  },
+  "ILLEGAL ALIENS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0042
+  },
+  "AMERICAN CITIZENS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0042
+  },
+  "FEDERAL LAW": {
     "type": "Institution",
     "in_degree": 1,
     "betweenness": 0.0,
-    "eigenvector": 0.0166
+    "eigenvector": 0.0042
+  },
+  "LEGAL RESIDENTS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0042
+  },
+  "TRUMP": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0013,
+    "eigenvector": 0.0034
+  },
+  "DEPORTATION FORCE": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0042
+  },
+  "MILLIONS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0042
+  },
+  "TARGET_78": {
+    "type": "Person",
+    "in_degree": 2,
+    "betweenness": 0.0008,
+    "eigenvector": 0.0051
+  },
+  "AUTHOR_78": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0007,
+    "eigenvector": 0.0034
+  },
+  "WHITE MEN": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "BROWN SHITHOLES": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "AUTHOR_81": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "BROWN 4": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_83": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0003,
+    "eigenvector": 0.0034
+  },
+  "ARAB WORLD": {
+    "type": "Group",
+    "in_degree": 3,
+    "betweenness": 0.0003,
+    "eigenvector": 0.0107
+  },
+  "ISRAEL": {
+    "type": "Institution",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "WESTERN WORLD": {
+    "type": "Institution",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR_85": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "CONGO": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_84": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "AUTHOR_86": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0001,
+    "eigenvector": 0.0034
+  },
+  "FELICIA": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "KING KONG": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "BASEBALL BAT": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "AUTHOR_88": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_88": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_87": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "DEADLY CLASS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_89": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_89": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_90": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_90": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_91": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0026,
+    "eigenvector": 0.0034
+  },
+  "GOD": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0044
+  },
+  "AUTHOR_93": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_93": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "BI COUPLE": {
+    "type": "Group",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "BI DAD FRIENDS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_95": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TARGET_95": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_96": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "WASHINGTON POST": {
+    "type": "Institution",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_97": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "TRANSVESTITE": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_98": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0021,
+    "eigenvector": 0.0034
+  },
+  "BROTHER": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0042
+  },
+  "INDIA": {
+    "type": "Location",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0042
+  },
+  "AUTHOR_99": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "HOOD NIGGAS": {
+    "type": "Group",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AUTHOR_100": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
+  },
+  "DWIGHT": {
+    "type": "Person",
+    "in_degree": 1,
+    "betweenness": 0.0,
+    "eigenvector": 0.0064
+  },
+  "AINZ": {
+    "type": "Person",
+    "in_degree": 0,
+    "betweenness": 0.0,
+    "eigenvector": 0.0034
   }
 }

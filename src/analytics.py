@@ -13,19 +13,19 @@ def run_analytics(G: nx.MultiDiGraph, out_dir: Path):
     D = nx.DiGraph(G)
     U = nx.Graph(D)
     
-    # 1. Compute Centrality
+    # Compute Centrality Metrics
     in_degree = dict(D.in_degree())
     
-    # Betweenness on undirected graph so central nodes are bridges
+    # Betweenness on undirected graph to find structural bridges
     betweenness = nx.betweenness_centrality(U)
     
-    # PageRank for directed star-graphs
+    # Eigenvector/PageRank to calculate real network influence
     try:
         eigenvector = nx.pagerank(D, alpha=0.85)
     except Exception:
         eigenvector = {n: 0 for n in D.nodes()}
 
-    # 2. Detect Communities
+    # Detect Communities
     try:
         communities = list(nx.community.greedy_modularity_communities(U))
         comm_map = {node: cid for cid, comm in enumerate(communities) for node in comm}
@@ -34,7 +34,7 @@ def run_analytics(G: nx.MultiDiGraph, out_dir: Path):
 
     metrics_report = {}
 
-    # 3. Inject metrics
+    # Inject metrics into nodes and build report
     for node in G.nodes():
         G.nodes[node]["in_degree"] = in_degree.get(node, 0)
         G.nodes[node]["betweenness"] = round(betweenness.get(node, 0), 4)
@@ -47,7 +47,7 @@ def run_analytics(G: nx.MultiDiGraph, out_dir: Path):
             "eigenvector": round(eigenvector.get(node, 0), 4)
         }
 
-    # 4. Save report
+    # Save metrics report for dashboard consumption
     out_dir.mkdir(parents=True, exist_ok=True)
     with open(out_dir / "metrics_report.json", "w", encoding="utf-8") as f:
         json.dump(metrics_report, f, indent=2, ensure_ascii=False)
