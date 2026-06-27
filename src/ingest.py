@@ -3,7 +3,6 @@ import argparse
 import json
 import logging
 import sqlite3
-import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -11,6 +10,7 @@ import requests
 from datasets import load_dataset
 from huggingface_hub import login
 from dotenv import load_dotenv
+from tenacity import retry, stop_after_attempt, wait_exponential, before_sleep_log
 
 # --- Config ---
 API_URL  = "http://127.0.0.1:8000/analyze"
@@ -123,22 +123,28 @@ def save_result(conn: sqlite3.Connection, lang: str, api_response: dict):
     conn.commit()
 
 # --- API Integration ---
-def call_api(entry_id: int, text: str, retries: int = 3) -> dict | None:
-    """Sends text payload + ID to the FastAPI endpoint."""
+
+@retry(
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=2, min=3, max=30),
+    before_sleep=before_sleep_log(logger, logging.WARNING),
+    reraise=True
+)
+def _post_api_with_retry(payload: dict) -> dict:
+    """Executes POST request to the analysis endpoint with exponential backoff."""
+    r = requests.post(API_URL, json=payload, timeout=120)
+    r.raise_for_status()
+    return r.json()
+
+def call_api(entry_id: int, text: str) -> dict | None:
+    """Sends text payload to the FastAPI endpoint with fault tolerance."""
     payload = {"id": entry_id, "text": text}
     
-    for attempt in range(retries):
-        try:
-            r = requests.post(API_URL, json=payload, timeout=120)
-            r.raise_for_status()
-            return r.json()
-        except Exception as e:
-            wait = 3 * (attempt + 1)
-            logger.warning(f"API error (attempt {attempt+1}/{retries}): {e} — retrying in {wait}s")
-            time.sleep(wait)
-            
-    logger.error(f"All retries exhausted for text: {text[:60]!r}")
-    return None
+    try:
+        return _post_api_with_retry(payload)
+    except Exception as e:
+        logger.error(f"All retries exhausted for text: {text[:60]!r} — Error: {e}")
+        return None
 
 # --- Dataset Loader ---
 def load_texts(lang: str, limit: int) -> list[str]:
@@ -207,6 +213,4 @@ if __name__ == "__main__":
 
 # Example usage:
 # python src/ingest.py --lang EN --limit 100
-# python src/ingest.py --lang ES --limit 100
-# python src/ingest.py --lang PT --limit 100
-# python src/ingest.py --lang FR --limit 100
+# python src/ingest.py --lang ES --limit 100    

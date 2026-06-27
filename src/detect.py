@@ -1,13 +1,15 @@
 import os
 import json
-import time
 import re
 import logging
 import logging.handlers
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import List, Literal # Added for Pydantic type hinting
 
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
+from tenacity import retry, stop_after_attempt, wait_exponential, before_sleep_log
+from pydantic import BaseModel, Field, ValidationError # Added for strict validation
 
 # Optional dependencies
 try:
@@ -81,8 +83,24 @@ PT_SLANG = {
     "k": "que", "d": "de", "aki": "aquí", "xfa": "por favor",
 }
 
-# --- Text Normalisation ---
+# --- Pydantic Validation Schemas ---
+class EntityModel(BaseModel):
+    id: str
+    type: str  # Kept flexible as string since clean_extracted_graph normalizes types later
+
+class RelationshipModel(BaseModel):
+    source: str
+    target: str
+    interaction_type: str
+
+class KnowledgeGraphModel(BaseModel):
+    entities: List[EntityModel] = Field(default_factory=list)
+    relationships: List[RelationshipModel] = Field(default_factory=list)
+
+
+# --- Text Normalization ---
 def normalize_text(text: str, lang: str = "pt") -> str:
+    """Cleans up text by removing emojis, URLs, handles, and expanding slang."""
     if _HAS_EMOJI:
         try:
             text = _emoji_lib.demojize(text, language=lang if lang in ("pt", "es") else "en")
@@ -211,6 +229,7 @@ OUTPUT ONLY VALID JSON. Keep the confidence_reasoning extremely short (MAXIMUM 8
 
 # --- Low-level API Helpers ---
 def safe_json_load(content):
+    """Safely extracts and parses JSON from a model's string output."""
     content_str = str(content).strip()
     
     if content_str.startswith("```json"):
@@ -235,23 +254,25 @@ def safe_json_load(content):
         logger.warning(f"JSON parse failed — raw: {content_str[:120]!r}")
     return {}
 
-def retry_call(fn, retries=3):
-    for i in range(retries):
-        try:
-            return fn()
-        except Exception as e:
-            wait = 2.5 * (i + 1)
-            if i == retries - 1:
-                logger.error(f"All {retries} retries exhausted: {e}")
-                raise
-            logger.warning(f"Retry {i + 1}/{retries}: {e} (waiting {wait:.1f}s)")
-            time.sleep(wait)
-
+@retry(
+    stop=stop_after_attempt(5), 
+    wait=wait_exponential(multiplier=2, min=2, max=20),
+    before_sleep=before_sleep_log(logger, logging.WARNING),
+    reraise=True
+)
 def call_classif(text: str, model: str):
+    """Calls HuggingFace text classification endpoint with automatic retries."""
     safe_text = truncate_for_classifier(text)
     return client.text_classification(text=safe_text, model=model)[0]
 
+@retry(
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=2, min=2, max=30),
+    before_sleep=before_sleep_log(logger, logging.WARNING),
+    reraise=True
+)
 def call_complet(model: str, messages: list, max_tokens: int = 150, temperature: float = 0.1):
+    """Calls HuggingFace chat completion endpoint with automatic retries."""
     response = client.chat_completion(
         model=model,
         messages=messages,
@@ -262,7 +283,7 @@ def call_complet(model: str, messages: list, max_tokens: int = 150, temperature:
 
 # --- Classification Tiers ---
 def _tier1_group_b(text: str):
-    res = retry_call(lambda: call_classif(text, MODEL_GROUP_B))
+    res = call_classif(text, MODEL_GROUP_B)
     if res.label != "hate" or res.score < THRESHOLD_B:
         return None
     return {
@@ -273,7 +294,7 @@ def _tier1_group_b(text: str):
 
 def _tier2_group_a(text: str, lang: str = "pt"):
     def _classify_and_map(model: str):
-        res = retry_call(lambda: call_classif(text, model))
+        res = call_classif(text, model)
         if res.score >= THRESHOLD_A and res.label != "neutral":
             label = "SENTIMENTAL" if res.label == "positive" else "EMOTIONAL"
             return {
@@ -297,12 +318,10 @@ def _tier3_group_c(text: str, source: str, interaction: str, target: str):
     prompt = TIER3_PROMPT_TEMPLATE.format(
         source=source, interaction=interaction, target=target, text=text,
     )
-    res_text = retry_call(
-        lambda: call_complet(
-            MODEL_GROUP_C,
-            [{"role": "user", "content": prompt}],
-            max_tokens=200,
-        )
+    res_text = call_complet(
+        MODEL_GROUP_C,
+        [{"role": "user", "content": prompt}],
+        max_tokens=200,
     )
     data       = safe_json_load(res_text)
     label      = data.get("taxonomy_classification")
@@ -358,7 +377,6 @@ def classify_relation(text: str, rel: dict, lang: str = "pt") -> dict:
 
 # --- Graph Cleaning Guardrail & Normalization ---
 
-# Static Mapping to ensure central metrics are structurally sound
 ENTITY_NORMALIZATION_MAP = {
     "DAD": "FATHER", "MOM": "MOTHER",
     "PRETOS": "BLACK PEOPLE", "NEGROS": "BLACK PEOPLE",
@@ -403,10 +421,7 @@ IGNORED_ENTITIES = {
 }
 
 def clean_extracted_graph(graph: dict, entry_id: int) -> dict:
-    """
-    Cleans extracted graph, applies dictionary normalization, 
-    and dynamically isolates vague targets with row ID to prevent massive hubs.
-    """
+    """Cleans extracted graph, applies dictionary normalization, and dynamically isolates vague targets."""
     if not graph:
         return graph
         
@@ -427,7 +442,6 @@ def clean_extracted_graph(graph: dict, entry_id: int) -> dict:
         if ent_id in ENTITY_NORMALIZATION_MAP:
             ent_id = ENTITY_NORMALIZATION_MAP[ent_id]
             
-        # Bind undefined users to current entry id
         if ent_id in author_aliases:
             ent_id   = f"AUTHOR_{entry_id}"
             ent_type = "Person"
@@ -468,7 +482,6 @@ def clean_extracted_graph(graph: dict, entry_id: int) -> dict:
             cleaned_relationships.append(rel)
             
     graph["relationships"] = cleaned_relationships
-    
     return graph
 
 # --- Entry Processor ---
@@ -481,21 +494,32 @@ def process_entry(idx: int, raw_text: str) -> dict:
 
     logger.info(f"[{idx}] Stage 1: extraction (lang={lang})")
     try:
-        s1_res = retry_call(
-            lambda: call_complet(
-                STAGE1_MODEL,
-                [
-                    {"role": "system", "content": STAGE_1_PROMPT.replace("[LANG]", lang)},
-                    {"role": "user",   "content": text},
-                ],
-                max_tokens=2048,
-            )
+        s1_res = call_complet(
+            STAGE1_MODEL,
+            [
+                {"role": "system", "content": STAGE_1_PROMPT.replace("[LANG]", lang)},
+                {"role": "user",   "content": text},
+            ],
+            max_tokens=2048,
         )
     except Exception as e:
         logger.error(f"[{idx}] Stage 1 failed: {e}", exc_info=True)
         return {"id": idx, "original_text": raw_text, "normalised_text": text, "analysis": {}}
 
-    graph = safe_json_load(s1_res)
+    graph_raw = safe_json_load(s1_res)
+    
+    # --- Pydantic Schema Guardrail ---
+    try:
+        # Validates that keys match and structural types are strictly preserved
+        validated_graph = KnowledgeGraphModel(**graph_raw)
+        graph = validated_graph.model_dump()
+        logger.info(f"[{idx}] Pydantic structural validation passed.")
+    except ValidationError as ve:
+        # If the LLM structural output is broken, fallback gracefully to prevent crashes
+        logger.warning(f"[{idx}] Pydantic structural validation failed due to hallucination: {ve}")
+        graph = {"entities": [], "relationships": []}
+
+    # Rest of the pipeline continues safely
     graph = clean_extracted_graph(graph, idx)
     
     logger.info(
@@ -504,7 +528,7 @@ def process_entry(idx: int, raw_text: str) -> dict:
     )
 
     if not graph or not graph.get("relationships"):
-        logger.warning(f"[{idx}] Empty graph — applying direct text classification")
+        logger.warning(f"[{idx}] Empty graph — applying direct text classification fallback")
         
         fallback_author = f"AUTHOR_{idx}"
         fallback_target = f"TARGET_{idx}"
@@ -533,9 +557,7 @@ def process_entry(idx: int, raw_text: str) -> dict:
 
     relationships = graph["relationships"]
     if len(relationships) > MAX_RELS_PER_ENTRY:
-        logger.warning(
-            f"[{idx}] Capping relationships from {len(relationships)} to {MAX_RELS_PER_ENTRY}"
-        )
+        logger.warning(f"[{idx}] Capping relationships from {len(relationships)} to {MAX_RELS_PER_ENTRY}")
         graph["relationships"] = relationships[:MAX_RELS_PER_ENTRY]
 
     logger.info(f"[{idx}] Stage 2: classifying {len(graph['relationships'])} relationships")
@@ -543,10 +565,7 @@ def process_entry(idx: int, raw_text: str) -> dict:
         try:
             result = classify_relation(text, rel, lang=lang)
             rel.update(result)
-            logger.info(
-                f"[{idx}] {rel.get('source')!r} → {rel.get('target')!r}: "
-                f"{result.get('taxonomy_classification')}"
-            )
+            logger.info(f"[{idx}] {rel.get('source')!r} → {rel.get('target')!r}: {result.get('taxonomy_classification')}")
         except Exception as e:
             logger.error(f"[{idx}] Relation classification failed: {e}", exc_info=True)
 

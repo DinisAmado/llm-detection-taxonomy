@@ -29,6 +29,7 @@ def load_db_predictions():
     return df
 
 def run_real_validation():
+    # Garantir que a pasta de destino existe
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     
     df_preds = load_db_predictions()
@@ -41,7 +42,6 @@ def run_real_validation():
     df_hf = ds.to_pandas()
     
     # CRITICAL: TEXT ALIGNMENT 
-    
     print("[3] A alinhar os textos da base de dados com as anotações originais...")
     
     # Clean text to ensure exact matching
@@ -87,11 +87,12 @@ def run_real_validation():
     plt.ylabel('Anotadores Humanos (Berkeley)', fontsize=11)
     plt.xlabel('Previsão do LLM', fontsize=11)
     plt.tight_layout()
-    plt.savefig(OUT_DIR / "confusion_matrix.png", dpi=150)
+    # Gravado a 300 DPI para alta resolução (Thesis Quality)
+    plt.savefig(OUT_DIR / "confusion_matrix.png", dpi=300)
     plt.close()
     
     # CHART 2: REAL CLASS DISTRIBUTION
-
+    
     plt.figure(figsize=(7, 5))
     sns.set_theme(style="whitegrid")
     ax = sns.countplot(x=y_true, hue=y_true, palette=["#74c476", "#d62728"], legend=False)
@@ -105,11 +106,11 @@ def run_real_validation():
                     ha='center', va='center', xytext=(0, 5), textcoords='offset points', 
                     fontsize=12, fontweight='bold')
     plt.tight_layout()
-    plt.savefig(OUT_DIR / "class_distribution.png", dpi=150)
+    plt.savefig(OUT_DIR / "class_distribution.png", dpi=300)
     plt.close()
 
     # CHART 3: REAL ROC CURVE
-
+    
     fpr_final, tpr_final, _ = roc_curve(y_true, y_prob)
     roc_auc_final = auc(fpr_final, tpr_final)
     
@@ -125,10 +126,12 @@ def run_real_validation():
     plt.title('Curva ROC Autêntica do Sistema', pad=15, fontsize=13, fontweight='bold')
     plt.legend(loc="lower right", fontsize=11, frameon=True, shadow=True)
     plt.tight_layout()
-    plt.savefig(OUT_DIR / "roc_curve.png", dpi=150)
+    # Nome ajustado para sincronizar com a aba de Validação Científica do app.py
+    plt.savefig(OUT_DIR / "roc_curve.png", dpi=300)
     plt.close()
     
     # CHART 4: NETWORK METRICS (SNA)
+    
     print("[4] A analisar Métricas de Rede (Graph Analytics)...")
     if Path(METRICS_JSON).exists():
         with open(METRICS_JSON, 'r', encoding='utf-8') as f:
@@ -145,14 +148,14 @@ def run_real_validation():
             plt.xlabel('Score de Influência (PageRank / Eigenvector)')
             plt.ylabel('Entidades / Atores')
             plt.tight_layout()
-            plt.savefig(OUT_DIR / "sna_pagerank_top10.png", dpi=150)
+            plt.savefig(OUT_DIR / "pagerank_top10.png", dpi=300)
             plt.close()
             print("[✓] Gráfico de Análise de Redes (SNA) gerado!")
     else:
         print("[!] analytics.py não foi executado ou metrics_report.json não existe.")
 
     # METRICS REPORT
-    
+
     acc = accuracy_score(y_true, y_pred)
     prec = precision_score(y_true, y_pred, zero_division=0)
     rec = recall_score(y_true, y_pred, zero_division=0)
@@ -175,7 +178,7 @@ def run_real_validation():
         f.write(report_txt)
         
     print(report_txt)
-    print(f"[✓] Validação real concluída. Gráficos na pasta: {OUT_DIR}")
+    print(f"[✓] Validação real concluída. Gráficos em alta resolução na pasta: {OUT_DIR}")
 
 if __name__ == "__main__":
     run_real_validation()

@@ -16,3 +16,5 @@ pandas
 numpy
 scikit-learn 
 seaborn
+tenacity
+pydantic
