@@ -30,6 +30,26 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# --- Constants for Graph Styling ---
+ENTITY_TYPE_COLOR = {
+    "Person":       "#4e79a7",
+    "Institution":  "#f28e2b",
+    "Location":     "#59a14f",
+    "Group":        "#e15759",
+    "OTHER":        "#b07aa1",
+}
+
+EDGE_COLORS = {
+    "EXTREMIST":   "#d62728",
+    "RADICALISM":  "#e6550d",
+    "VIOLATED":    "#fd8d3c",
+    "THREAT":      "#e7ba52",
+    "HATE":        "#9467bd",
+    "EMOTIONAL":   "#5254a3",
+    "SENTIMENTAL": "#6baed6",
+    "NEUTRAL":     "#74c476",
+}
+
 # --- Data Loading ---
 @st.cache_data
 def load_data():
@@ -82,100 +102,124 @@ if metrics:
             continue
         filtered_metrics[entity] = data
 
-
 # --- Main Layout with Tabs ---
 st.title("🛡️ TACTICAL EARLY WARNING SYSTEM")
 st.markdown("API-Driven Semantic Network Analysis Dashboard")
 
 tab1, tab2 = st.tabs(["📊 Real-time SNA Operations", "🔬 Model Validation & Performance"])
 
-# OPERATIONAL DASHBOARD (DYNAMIC KG)
-
+# --- Tab 1: Operational Dashboard ---
 with tab1:
     st.divider()
     left_col, right_col = st.columns([1, 2.2])
 
     with left_col:
-        st.subheader("Critical Alerts")
+        st.subheader("🚨 Most Dangerous Entities")
         if not filtered_df.empty:
             top_sources = filtered_df["source"].value_counts().head(5).reset_index()
-            top_sources.columns = ["Entity (Source)", "Filtered Incidents"]
+            top_sources.columns = ["Entity", "Critical Incidents"]
             st.dataframe(top_sources, hide_index=True, width="stretch")
         else:
             st.info("No critical alerts found for the selected filters.")
         
-        st.subheader("Network Influencers")
+        st.subheader("🌐 Network Influencers Global")
         if filtered_metrics:
             df_metrics = pd.DataFrame.from_dict(filtered_metrics, orient="index").reset_index()
             df_metrics.columns = ["Entity", "Type", "In-Degree", "Betweenness", "Influence"]
             df_inf = df_metrics.sort_values(by="Influence", ascending=False).head(7)
             
-            styled_inf = df_inf[["Entity", "Type", "Influence"]].style.background_gradient(
-                subset=["Influence"], cmap="Blues"
-            ).format({"Influence": "{:.2%}"})
+            styled_inf = df_inf.style.background_gradient(
+                subset=["Influence", "Betweenness"], cmap="Blues"
+            ).format({
+                "Influence": "{:.2%}",
+                "Betweenness": "{:.4f}"
+            })
             
             st.dataframe(styled_inf, hide_index=True, width="stretch")
         else:
-            st.info("No entities match the current search criteria.")
+            st.info("No SNA metrics available matching criteria.")
 
     with right_col:
         st.subheader("Interactive Knowledge Graph")
         
+        # Dual Legend for Nodes (Entity Types) and Edges (Severity Levels)
+        legend_html = '''
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; background-color: #1a1a2e; padding: 12px; border-radius: 5px; border: 1px solid #2a2a4a;">
+            <div>
+                <span style="color: #ffffff; font-size: 13px; font-weight: bold; margin-bottom: 6px; display: block;">Entity Types (Nodes)</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+        '''
+        for ent_type, color in ENTITY_TYPE_COLOR.items():
+            legend_html += f'<div style="display: flex; align-items: center; gap: 6px;"><div style="width: 12px; height: 12px; background-color: {color}; border-radius: 50%;"></div><span style="color: #e0e0e0; font-size: 12px; font-weight: 500;">{ent_type}</span></div>'
+        
+        legend_html += '''
+                </div>
+            </div>
+            <div style="height: 1px; background-color: #2a2a4a; margin: 2px 0;"></div>
+            <div>
+                <span style="color: #ffffff; font-size: 13px; font-weight: bold; margin-bottom: 6px; display: block;">Severity Levels (Edges)</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+        '''
+        for cls, color in EDGE_COLORS.items():
+            legend_html += f'<div style="display: flex; align-items: center; gap: 6px;"><div style="width: 12px; height: 12px; background-color: {color}; border-radius: 50%;"></div><span style="color: #e0e0e0; font-size: 12px; font-weight: 500;">{cls}</span></div>'
+        
+        legend_html += '</div></div></div>'
+        st.markdown(legend_html, unsafe_allow_html=True)
+        
         if not filtered_df.empty:
-            # Dynamically instantiate a PyVis network in memory
-            net = Network(height="600px", width="100%", bgcolor="#1a1a2e", font_color="white", directed=True)
+            net = Network(height="750px", width="100%", bgcolor="#1a1a2e", font_color="white", directed=True)
             
-            # Preserve the official severity color palette from kg.py
-            edge_colors = {
-                "EXTREMIST":   "#d62728",
-                "RADICALISM":  "#e6550d",
-                "VIOLATED":    "#fd8d3c",
-                "THREAT":      "#e7ba52",
-                "HATE":        "#9467bd",
-                "EMOTIONAL":   "#5254a3",
-                "SENTIMENTAL": "#6baed6",
-                "NEUTRAL":     "#74c476",
-            }
-            
-            # Populate the network using only the filtered dataframe rows
             for _, row in filtered_df.iterrows():
                 src = row["source"]
                 tgt = row["target"]
                 cls = row["taxonomy_classification"]
                 int_type = row["interaction_type"]
                 
-                # PyVis automatically ignores duplicate nodes
-                net.add_node(src, label=src, color="#4e79a7", title=f"Entity: {src}")
-                net.add_node(tgt, label=tgt, color="#4e79a7", title=f"Entity: {tgt}")
+                src_type = metrics.get(src, {}).get("type", "OTHER") if metrics else "OTHER"
+                tgt_type = metrics.get(tgt, {}).get("type", "OTHER") if metrics else "OTHER"
                 
-                # Add edge with the corresponding severity color and custom hover tooltip
+                src_color = ENTITY_TYPE_COLOR.get(src_type, "#b07aa1")
+                tgt_color = ENTITY_TYPE_COLOR.get(tgt_type, "#b07aa1")
+                
+                net.add_node(src, label=src, color=src_color, title=f"Entity: {src}\nType: {src_type}")
+                net.add_node(tgt, label=tgt, color=tgt_color, title=f"Entity: {tgt}\nType: {tgt_type}")
+                
                 net.add_edge(
                     src, tgt, 
                     title=f"Relation: {int_type} ({cls})", 
-                    color=edge_colors.get(cls, "#999999"),
+                    color=EDGE_COLORS.get(cls, "#999999"),
                     weight=2
                 )
             
-            # Generate the HTML structure on-the-fly without touching the disk
+            net.set_options('''
+            var options = {
+              "physics": {
+                "barnesHut": {
+                  "springLength": 180,
+                  "centralGravity": 0.3
+                }
+              }
+            }
+            ''')
+            
             html_string = net.generate_html()
-            components.html(html_string, height=650, scrolling=True)
+            components.html(html_string, height=580, scrolling=True)
         else:
             st.info("No data available to render the graph based on the current filters.")
 
-# SCIENTIFIC VALIDATION
-
+# --- Tab 2: Scientific Validation ---
 with tab2:
     st.divider()
     st.subheader("Empirical Model Evaluation (UC Berkeley Dataset)")
-    st.markdown("This section presents the real-world validation metrics computed for the multi-tier cascade pipeline.")
+    st.markdown("Real-world validation metrics computed for the multi-tier cascade pipeline.")
     
     m1, m2, m3, m4 = st.columns(4)
     with m1:
-        st.metric(label="Accuracy (Exatidão)", value="71.80%", delta="Baseline Overperformed")
+        st.metric(label="Accuracy", value="71.80%", delta="Baseline Overperformed")
     with m2:
-        st.metric(label="Recall (Sensibilidade)", value="91.76%", delta="High Risk Capture", delta_color="normal")
+        st.metric(label="Recall", value="91.76%", delta="High Risk Capture", delta_color="normal")
     with m3:
-        st.metric(label="Precision (Precisão)", value="57.00%", delta="Over-zealous/Preventive", delta_color="inverse")
+        st.metric(label="Precision", value="57.00%", delta="Over-zealous/Preventive", delta_color="inverse")
     with m4:
         st.metric(label="F1-Score", value="70.32%")
         
@@ -183,7 +227,7 @@ with tab2:
     
     g1, g2 = st.columns(2)
     with g1:
-        st.subheader("ROC Curve (Área Sob a Curva)")
+        st.subheader("ROC Curve")
         roc_path = "graphs/validation/roc_curve.png" 
         if os.path.exists(roc_path):
             st.image(roc_path, caption="Receiver Operating Characteristic (AUC: 0.63)", use_container_width=True)
@@ -191,7 +235,7 @@ with tab2:
             st.info("ROC Curve image not found at 'graphs/validation/roc_curve.png'.")
             
     with g2:
-        st.subheader("Confusion Matrix (Matriz de Confusão)")
+        st.subheader("Confusion Matrix")
         cm_path = "graphs/validation/confusion_matrix.png"
         if os.path.exists(cm_path):
             st.image(cm_path, caption="Confusion Matrix: 15 False Negatives vs 126 False Positives", use_container_width=True)
