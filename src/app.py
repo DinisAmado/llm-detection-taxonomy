@@ -62,6 +62,23 @@ def load_data():
     return df_rel
 
 @st.cache_data
+def load_entity_types():
+    """Fetches exact entity types directly from the database to ensure color accuracy."""
+    if not os.path.exists("results/sna.db"):
+        return {}
+    conn = sqlite3.connect("results/sna.db")
+    df_ents = pd.read_sql_query("SELECT entity_id, entity_type FROM entities", conn)
+    conn.close()
+    
+    mapping = {}
+    for _, row in df_ents.iterrows():
+        eid = row["entity_id"]
+        etype = row["entity_type"]
+        if eid and eid not in mapping:
+            mapping[eid] = etype if etype else "OTHER"
+    return mapping
+
+@st.cache_data
 def load_metrics():
     metrics_path = "graphs/metrics_report.json"
     if os.path.exists(metrics_path):
@@ -70,6 +87,7 @@ def load_metrics():
     return {}
 
 df = load_data()
+entity_types_map = load_entity_types()
 metrics = load_metrics()
 
 # --- Sidebar Filters ---
@@ -167,7 +185,7 @@ with tab1:
         st.markdown(legend_html, unsafe_allow_html=True)
         
         if not filtered_df.empty:
-            net = Network(height="750px", width="100%", bgcolor="#1a1a2e", font_color="white", directed=True)
+            net = Network(height="600px", width="100%", bgcolor="#1a1a2e", font_color="white", directed=True)
             
             for _, row in filtered_df.iterrows():
                 src = row["source"]
@@ -175,8 +193,9 @@ with tab1:
                 cls = row["taxonomy_classification"]
                 int_type = row["interaction_type"]
                 
-                src_type = metrics.get(src, {}).get("type", "OTHER") if metrics else "OTHER"
-                tgt_type = metrics.get(tgt, {}).get("type", "OTHER") if metrics else "OTHER"
+                # Fetch exact types from the database mapping instead of metrics JSON
+                src_type = entity_types_map.get(src, "OTHER")
+                tgt_type = entity_types_map.get(tgt, "OTHER")
                 
                 src_color = ENTITY_TYPE_COLOR.get(src_type, "#b07aa1")
                 tgt_color = ENTITY_TYPE_COLOR.get(tgt_type, "#b07aa1")
@@ -203,7 +222,7 @@ with tab1:
             ''')
             
             html_string = net.generate_html()
-            components.html(html_string, height=580, scrolling=True)
+            components.html(html_string, height=650, scrolling=True)
         else:
             st.info("No data available to render the graph based on the current filters.")
 
